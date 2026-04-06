@@ -7,6 +7,8 @@ import { useNotificationStore } from '@/store/notificationStore';
 import { ROUTES } from '@/config/routes';
 import { APP_NAME } from '@/config/constants';
 import { getInitials } from '@/lib/utils';
+import LanguageSelector from '@/components/common/LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -14,6 +16,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const { unreadCount } = useNotificationStore();
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const dashboardRoute = user?.role === 'instructor' ? ROUTES.INSTRUCTOR_DASHBOARD
     : user?.role === 'admin' ? ROUTES.ADMIN_DASHBOARD
@@ -39,7 +42,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
-            placeholder="Search courses..."
+            placeholder={t('header.searchPlaceholder')}
             className="w-full h-9 pl-9 pr-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             onKeyDown={(e) => e.key === 'Enter' && navigate(`${ROUTES.COURSES}?search=${(e.target as HTMLInputElement).value}`)}
           />
@@ -47,6 +50,9 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
+        {/* Language selector */}
+        <LanguageSelector />
+
         {/* Theme toggle */}
         <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -90,16 +96,16 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
                   </div>
                   <Link to={dashboardRoute} onClick={() => setProfileOpen(false)}
                     className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <BookOpen size={16} /> Dashboard
+                    <BookOpen size={16} /> {t('header.dashboard')}
                   </Link>
                   <Link to={`${dashboardRoute.split('/')[1]}/settings` as string} onClick={() => setProfileOpen(false)}
                     className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <Settings size={16} /> Settings
+                    <Settings size={16} /> {t('header.settings')}
                   </Link>
                   <hr className="my-1 border-gray-100 dark:border-gray-800" />
                   <button onClick={() => { logout(); setProfileOpen(false); }}
                     className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition">
-                    <LogOut size={16} /> Logout
+                    <LogOut size={16} /> {t('header.logout')}
                   </button>
                 </div>
               )}

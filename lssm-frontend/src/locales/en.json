@@ -1,0 +1,32 @@
+{
+  "common": {
+    "home": "Home",
+    "courses": "Courses",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "search": "Search",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "Learn Art & Design Online",
+    "subtitle": "Master creative skills with expert instructors",
+    "cta": "Get Started"
+  },
+  "courses": {
+    "title": "Our Courses",
+    "enroll": "Enroll Now",
+    "price": "Price",
+    "students": "Students",
+    "lessons": "Lessons",
+    "duration": "Duration"
+  },
+  "header": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "logout": "Logout",
+    "searchPlaceholder": "Search courses..."
+  }
+}
