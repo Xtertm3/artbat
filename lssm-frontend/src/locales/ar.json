@@ -1,0 +1,43 @@
+{
+  "common": {
+    "home": "الصفحة الرئيسية",
+    "courses": "الدورات",
+    "about": "حول",
+    "contact": "اتصال",
+    "login": "تسجيل الدخول",
+    "register": "تسجيل",
+    "logout": "تسجيل الخروج",
+    "search": "بحث",
+    "language": "اللغة"
+  },
+  "hero": {
+    "title": "تعلم الفن والتصميم عبر الإنترنت",
+    "subtitle": "أتقن المهارات الإبداعية مع مدربين خبراء",
+    "cta": "ابدأ الآن"
+  },
+  "courses": {
+    "title": "دوراتنا",
+    "enroll": "سجل الآن",
+    "price": "السعر",
+    "students": "الطلاب",
+    "lessons": "الدروس",
+    "duration": "المدة"
+  },
+  "auth": {
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "الاسم",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "هل لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب"
+  },
+  "header": {
+    "dashboard": "لوحة التحكم",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "searchPlaceholder": "ابحث عن الدورات..."
+  }
+}

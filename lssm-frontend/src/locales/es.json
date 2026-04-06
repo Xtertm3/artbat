@@ -1,0 +1,43 @@
+{
+  "common": {
+    "home": "Inicio",
+    "courses": "Cursos",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "search": "Buscar",
+    "language": "Idioma"
+  },
+  "hero": {
+    "title": "Aprende arte y diseño en línea",
+    "subtitle": "Domina habilidades creativas con instructores expertos",
+    "cta": "Comenzar"
+  },
+  "courses": {
+    "title": "Nuestros cursos",
+    "enroll": "Inscribirse ahora",
+    "price": "Precio",
+    "students": "Estudiantes",
+    "lessons": "Lecciones",
+    "duration": "Duración"
+  },
+  "auth": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse"
+  },
+  "header": {
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "searchPlaceholder": "Buscar cursos..."
+  }
+}

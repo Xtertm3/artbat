@@ -1,0 +1,43 @@
+{
+  "common": {
+    "home": "Accueil",
+    "courses": "Cours",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "search": "Recherche",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "Apprenez l'art et le design en ligne",
+    "subtitle": "Maîtrisez des compétences créatives avec des instructeurs experts",
+    "cta": "Commencer"
+  },
+  "courses": {
+    "title": "Nos cours",
+    "enroll": "S'inscrire maintenant",
+    "price": "Prix",
+    "students": "Étudiants",
+    "lessons": "Leçons",
+    "duration": "Durée"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire"
+  },
+  "header": {
+    "dashboard": "Tableau de bord",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "searchPlaceholder": "Rechercher des cours..."
+  }
+}
