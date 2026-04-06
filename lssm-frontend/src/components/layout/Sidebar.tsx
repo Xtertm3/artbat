@@ -1,0 +1,113 @@
+import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  Home, BookOpen, Calendar, Target, BarChart2, Award, Users, MessageSquare,
+  Settings, LogOut, PlusCircle, DollarSign, ShieldCheck, Bell, X
+} from 'lucide-react';
+import { useAuthStore } from '@/store/authStore';
+import { ROUTES } from '@/config/routes';
+import { getInitials } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+
+const studentLinks = [
+  { to: ROUTES.STUDENT_DASHBOARD, icon: Home, label: 'Dashboard' },
+  { to: ROUTES.STUDENT_MY_COURSES, icon: BookOpen, label: 'My Courses' },
+  { to: ROUTES.COURSES, icon: Target, label: 'Browse Courses' },
+  { to: ROUTES.STUDENT_SCHEDULE, icon: Calendar, label: 'Schedule' },
+  { to: ROUTES.STUDENT_PRACTICE, icon: Target, label: 'Practice Zone' },
+  { to: ROUTES.STUDENT_PROGRESS, icon: BarChart2, label: 'Progress' },
+  { to: ROUTES.STUDENT_CERTIFICATES, icon: Award, label: 'Certificates' },
+  { to: ROUTES.STUDENT_COMMUNITY, icon: Users, label: 'Community' },
+  { to: ROUTES.STUDENT_SETTINGS, icon: Settings, label: 'Settings' },
+];
+
+const instructorLinks = [
+  { to: ROUTES.INSTRUCTOR_DASHBOARD, icon: Home, label: 'Dashboard' },
+  { to: ROUTES.INSTRUCTOR_MY_COURSES, icon: BookOpen, label: 'My Courses' },
+  { to: ROUTES.INSTRUCTOR_CREATE_COURSE, icon: PlusCircle, label: 'Create Course' },
+  { to: ROUTES.INSTRUCTOR_STUDENTS, icon: Users, label: 'Students' },
+  { to: ROUTES.INSTRUCTOR_ANALYTICS, icon: BarChart2, label: 'Analytics' },
+  { to: ROUTES.INSTRUCTOR_EARNINGS, icon: DollarSign, label: 'Earnings' },
+  { to: ROUTES.INSTRUCTOR_MESSAGES, icon: MessageSquare, label: 'Messages' },
+  { to: ROUTES.INSTRUCTOR_SETTINGS, icon: Settings, label: 'Settings' },
+];
+
+const adminLinks = [
+  { to: ROUTES.ADMIN_DASHBOARD, icon: Home, label: 'Dashboard' },
+  { to: ROUTES.ADMIN_USERS, icon: Users, label: 'Users' },
+  { to: ROUTES.ADMIN_COURSES, icon: BookOpen, label: 'Courses' },
+  { to: ROUTES.ADMIN_INSTRUCTORS, icon: ShieldCheck, label: 'Instructors' },
+  { to: ROUTES.ADMIN_PAYMENTS, icon: DollarSign, label: 'Payments' },
+  { to: ROUTES.ADMIN_ANALYTICS, icon: BarChart2, label: 'Analytics' },
+  { to: ROUTES.ADMIN_SUPPORT, icon: Bell, label: 'Support' },
+  { to: ROUTES.ADMIN_SETTINGS, icon: Settings, label: 'Settings' },
+];
+
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ open, onClose }: SidebarProps) {
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const links = user?.role === 'instructor' ? instructorLinks
+    : user?.role === 'admin' ? adminLinks
+    : studentLinks;
+
+  return (
+    <>
+      {/* Overlay on mobile */}
+      {open && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={onClose} />}
+
+      <aside className={cn(
+        'fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-40 flex flex-col transition-transform duration-300',
+        open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      )}>
+        {/* Mobile close */}
+        <button onClick={onClose} className="absolute top-3 right-3 lg:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+          <X size={18} />
+        </button>
+
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto p-3 space-y-0.5 pt-4">
+          {links.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={onClose}
+              className={({ isActive }) => cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                isActive
+                  ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
+              )}
+            >
+              <Icon size={18} />
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* User info + logout */}
+        <div className="p-3 border-t border-gray-200 dark:border-gray-800">
+          <div className="flex items-center gap-3 px-2 py-2 mb-1">
+            <div className="w-9 h-9 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold shrink-0">
+              {getInitials(user?.name || 'U')}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium truncate">{user?.name}</p>
+              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => { logout(); navigate('/login'); }}
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+          >
+            <LogOut size={18} /> Logout
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}

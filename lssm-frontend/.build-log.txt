@@ -1,0 +1,39 @@
+
+> lssm-frontend@0.1.0 build
+> tsc -b && vite build
+
+[36mvite v8.0.3 [32mbuilding client environment for production...[36m[39m
+[2K
+transforming...Ô£ô 2002 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.62 kB Ôöé gzip:   0.34 kB
+dist/assets/index-BfSsL9v0.css               42.40 kB Ôöé gzip:   7.58 kB
+dist/assets/loader-2-BuDAH-OQ.js              0.13 kB Ôöé gzip:   0.15 kB
+dist/assets/clock-CjM7rFer.js                 0.18 kB Ôöé gzip:   0.17 kB
+dist/assets/check-circle-B45hhSsC.js          0.19 kB Ôöé gzip:   0.18 kB
+dist/assets/eye-BW0WocvW.js                   0.19 kB Ôöé gzip:   0.18 kB
+dist/assets/star-Cx6AHjHF.js                  0.21 kB Ôöé gzip:   0.18 kB
+dist/assets/play-BFO1jzkw.js                  0.30 kB Ôöé gzip:   0.23 kB
+dist/assets/sliders-horizontal-Ducyydgb.js    0.58 kB Ôöé gzip:   0.27 kB
+dist/assets/ForgotPassword-DGpyeosk.js        2.67 kB Ôöé gzip:   1.11 kB
+dist/assets/Curriculum-CSZNHAbj.js            3.55 kB Ôöé gzip:   1.47 kB
+dist/assets/ExploreArts-ZnciRFYd.js           4.06 kB Ôöé gzip:   1.59 kB
+dist/assets/Learning-hNedahHO.js              4.94 kB Ôöé gzip:   1.89 kB
+dist/assets/Register-CBubymLa.js              5.12 kB Ôöé gzip:   1.56 kB
+dist/assets/Dashboard-KMGm6MfC.js             5.48 kB Ôöé gzip:   1.74 kB
+dist/assets/Login-CwYUTnD0.js                 5.99 kB Ôöé gzip:   2.29 kB
+dist/assets/MyCourses-LtWDIvZM.js             6.54 kB Ôöé gzip:   2.16 kB
+dist/assets/CourseDetail-DyfcCni4.js          7.49 kB Ôöé gzip:   2.52 kB
+dist/assets/Dashboard-DXB2MWdI.js             8.39 kB Ôöé gzip:   2.55 kB
+dist/assets/Dashboard-Mp9tVsKs.js            10.60 kB Ôöé gzip:   3.11 kB
+dist/assets/Courses-q8OrPVCW.js              10.91 kB Ôöé gzip:   3.37 kB
+dist/assets/useCourses-DwMde-MT.js           12.34 kB Ôöé gzip:   4.14 kB
+dist/assets/createLucideIcon-BmEPhTxQ.js     14.30 kB Ôöé gzip:   5.20 kB
+dist/assets/Home-Um3uYimp.js                 16.21 kB Ôöé gzip:   4.38 kB
+dist/assets/mockData-s08TGhKa.js             26.92 kB Ôöé gzip:   7.20 kB
+dist/assets/axios-BgOsDT4t.js                36.47 kB Ôöé gzip:  14.43 kB
+dist/assets/useAuth-DQTbiw1v.js              82.83 kB Ôöé gzip:  22.45 kB
+dist/assets/index-BqUl-TTJ.js               441.83 kB Ôöé gzip: 140.30 kB
+
+[32mÔ£ô built in 2.75s[39m
