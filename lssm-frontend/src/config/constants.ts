@@ -2,8 +2,8 @@ export const APP_NAME = 'LSSM';
 export const APP_FULL_NAME = 'London Serenade School of Music';
 export const APP_DESCRIPTION = 'Master Music, Dance & Theater from Home';
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+export const API_URL = import.meta.env.VITE_API_URL ?? (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api');
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : window.location.origin);
 export const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || '';
 
 export const COURSE_CATEGORIES = [
