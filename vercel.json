@@ -1,6 +1,14 @@
 {
-  "buildCommand": "cd lssm-frontend && npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "lssm-frontend/dist",
+  "version": 2,
+  "builds": [
+    {
+      "src": "lssm-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
