@@ -1,5 +1,7 @@
 {
-  "buildCommand": "cd lssm-frontend && npm install --legacy-peer-deps && npm run build",
+  "version": 2,
+  "installCommand": "cd lssm-frontend && npm install --legacy-peer-deps",
+  "buildCommand": "cd lssm-frontend && npm run build",
   "outputDirectory": "lssm-frontend/dist",
   "routes": [
     {
