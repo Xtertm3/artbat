@@ -52,7 +52,11 @@ export function Curriculum({ modules, completedLessons = [], currentLessonId, on
   const toggle = (id: string) => {
     setExpanded((prev) => {
       const s = new Set(prev);
-      s.has(id) ? s.delete(id) : s.add(id);
+      if (s.has(id)) {
+        s.delete(id);
+      } else {
+        s.add(id);
+      }
       return s;
     });
   };

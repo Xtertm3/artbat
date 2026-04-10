@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Star, Clock, Users, BookOpen } from 'lucide-react';
 import { cn, formatPrice, formatDuration, truncate } from '@/lib/utils';
 import type { Course } from '@/types';

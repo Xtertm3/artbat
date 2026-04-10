@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
-import { formatDate, getInitials, timeAgo } from '@/lib/utils';
+import { getInitials, timeAgo } from '@/lib/utils';
 import type { Review } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -75,7 +75,11 @@ export function Reviews({ reviews, rating, totalReviews }: ReviewsProps) {
                 <button
                   onClick={() => {
                     const s = new Set(helpful);
-                    s.has(r.id) ? s.delete(r.id) : s.add(r.id);
+                    if (s.has(r.id)) {
+                      s.delete(r.id);
+                    } else {
+                      s.add(r.id);
+                    }
                     setHelpful(s);
                   }}
                   className={cn('flex items-center gap-1.5 text-xs mt-2 hover:text-primary-600 transition',

@@ -26,10 +26,7 @@ const INSTRUCTORS = [
   { id: '4', name: 'Michael Chen', specialty: 'Piano & Music Theory', rating: 5.0, students: 18900, emoji: '🎹' },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.12 } }),
-};
+
 
 function AnimatedStat({ value, label, icon: Icon }: { value: string; label: string; icon: React.ElementType }) {
   const ref = useRef(null);

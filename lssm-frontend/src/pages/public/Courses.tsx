@@ -53,14 +53,14 @@ export default function CoursesPage() {
   const [params, setParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(params.get('search') || '');
 
-  const filters: CourseFilters = {
+  const filters: CourseFilters = useMemo(() => ({
     category: (params.get('category') as CourseFilters['category']) || undefined,
     level: (params.get('level') as SkillLevel) || undefined,
     search: params.get('search') || undefined,
     language: params.get('language') || undefined,
     subcategory: params.get('subcategory') || undefined,
     sortBy: (params.get('sortBy') as CourseFilters['sortBy']) || 'popular',
-  };
+  }), [params]);
 
   const { data, isLoading } = useCourses(filters);
   const sourceCourses = data?.courses?.length ? data.courses : MOCK_COURSES;

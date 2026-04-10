@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Search, Sun, Moon, Menu, LogOut, User, Settings, BookOpen } from 'lucide-react';
+import { Bell, Search, Sun, Moon, Menu, LogOut, Settings, BookOpen } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useThemeStore } from '@/store/themeStore';

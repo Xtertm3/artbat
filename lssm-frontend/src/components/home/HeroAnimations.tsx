@@ -14,6 +14,7 @@ class LottieErrorBoundary extends Component<{ children: ReactNode }, { hasError:
     return { hasError: true };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
     // Intentionally silent to avoid noisy logs in production.
   }
