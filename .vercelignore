@@ -14,7 +14,4 @@ run_*.bat
 setup_*.py
 setup_*.bat
 *.bat
-tsconfig.json
-tsconfig.node.json
-postcss.config.js
-tailwind.config.js
+

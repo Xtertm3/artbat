@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        String
+  avatar      String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  courses     Course[] // as instructor
+  enrollments Enrollment[]
+  reviews     Review[]
+
+  @@map("users")
+}
+
+model Course {
+  id                String   @id @default(cuid())
+  title             String
+  description       String
+  shortDescription  String
+  thumbnail         String?
+  category          String
+  subcategory       String
+  level             String
+  language          String
+  price             Decimal
+  originalPrice     Decimal
+  instructorId      String
+  instructorName    String
+  instructorRating  Decimal
+  rating            Decimal
+  totalReviews      Int
+  totalStudents     Int
+  totalLessons      Int
+  totalDuration     Int
+  modules           Json?
+  tags              Json?
+  isPublished       Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  instructor  User         @relation(fields: [instructorId], references: [id])
+  enrollments Enrollment[]
+  reviews     Review[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id               String   @id @default(cuid())
+  userId           String
+  courseId         String
+  enrolledAt       DateTime @default(now())
+  progress         Int      @default(0)
+  completedLessons Json?
+  lastAccessedAt   DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  courseId  String
+  userId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  course Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("reviews")
+}

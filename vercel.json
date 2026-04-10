@@ -1,13 +1,14 @@
 {
   "version": 2,
-  "installCommand": "cd lssm-frontend && npm install --legacy-peer-deps",
-  "buildCommand": "cd lssm-frontend && npm run build",
-  "outputDirectory": "lssm-frontend/dist",
-  "routes": [
+  "outputDirectory": "dist",
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html",
-      "status": 200
+      "source": "/(api|socket.io)/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api|socket.io).*)",
+      "destination": "/index.html"
     }
   ]
 }
