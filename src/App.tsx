@@ -7,18 +7,20 @@ import { PublicLayout } from '@/components/layout/PublicLayout';
 import { ROUTES } from '@/config/routes';
 import { useAuthStore } from '@/store/authStore';
 
-const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPassword'));
-const LoginPage = lazy(() => import('@/pages/auth/Login'));
-const RegisterPage = lazy(() => import('@/pages/auth/Register'));
+import ForgotPasswordPage from '@/pages/auth/ForgotPassword';
+import LoginPage from '@/pages/auth/Login';
+import RegisterPage from '@/pages/auth/Register';
+import HomePage from '@/pages/public/Home';
+import StudentDashboardPage from '@/pages/student/Dashboard';
+import StudentLearningPage from '@/pages/student/Learning';
+import StudentMyCoursesPage from '@/pages/student/MyCourses';
+
 const CourseDetailPage = lazy(() => import('@/pages/public/CourseDetail'));
 const CoursesPage = lazy(() => import('@/pages/public/Courses'));
 const ExploreArtsPage = lazy(() => import('@/pages/public/ExploreArts'));
-const HomePage = lazy(() => import('@/pages/public/Home'));
 const AdminDashboardPage = lazy(() => import('@/pages/admin/Dashboard'));
 const InstructorDashboardPage = lazy(() => import('@/pages/instructor/Dashboard'));
-const StudentDashboardPage = lazy(() => import('@/pages/student/Dashboard'));
-const StudentLearningPage = lazy(() => import('@/pages/student/Learning'));
-const StudentMyCoursesPage = lazy(() => import('@/pages/student/MyCourses'));
+
 
 function RouteSkeleton() {
   return (

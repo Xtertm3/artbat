@@ -1,7 +1,11 @@
 import { CheckCircle2, Clock3, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Lottie from 'lottie-react';
+import LottieComponent from 'lottie-react';
 import eqBarsData from '@/assets/lottie/eqBars.json';
+
+// Handle ESM/CJS interop for Lottie
+const Lottie = (LottieComponent as any).default || LottieComponent;
+
 
 interface ModuleWorkspaceProps {
   title: string;

@@ -1,8 +1,11 @@
-import Lottie from 'lottie-react';
+import LottieComponent from 'lottie-react';
 import { motion } from 'framer-motion';
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import musicPulseData from '@/assets/lottie/musicPulse.json';
 import eqBarsData from '@/assets/lottie/eqBars.json';
+
+// Handle ESM/CJS interop for Lottie
+const Lottie = (LottieComponent as any).default || LottieComponent;
 
 class LottieErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
   constructor(props: { children: ReactNode }) {
@@ -28,12 +31,16 @@ class LottieErrorBoundary extends Component<{ children: ReactNode }, { hasError:
 }
 
 function SafeLottie({ animationData }: { animationData: object }) {
+  if (typeof Lottie !== 'function' && typeof Lottie !== 'string') {
+    return null; // Prevent Error #130
+  }
   return (
     <LottieErrorBoundary>
       <Lottie animationData={animationData} loop autoplay />
     </LottieErrorBoundary>
   );
 }
+
 
 /**
  * Decorative Lottie animations for the hero section.

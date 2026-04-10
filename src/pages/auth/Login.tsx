@@ -4,8 +4,12 @@ import { ROUTES } from '@/config/routes';
 import { useAuthStore } from '@/store/authStore';
 import type { UserRole } from '@/types';
 import { motion } from 'framer-motion';
-import Lottie from 'lottie-react';
+import LottieComponent from 'lottie-react';
 import eqBarsData from '@/assets/lottie/eqBars.json';
+
+// Handle ESM/CJS interop for Lottie
+const Lottie = (LottieComponent as any).default || LottieComponent;
+
 
 const DEMO_ROLES: { role: UserRole; label: string; desc: string; emoji: string; color: string }[] = [
   { role: 'student', label: 'Student', desc: 'Browse courses & track progress', emoji: '🎓', color: 'from-violet-500 to-purple-600' },
