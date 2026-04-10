@@ -11,8 +11,28 @@ const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 
 initializeDatabase();
+const ALLOWED_ORIGINS = [
+  CLIENT_ORIGIN,
+  'https://artbat-backend.onrender.com', // Self
+  'https://vercel.com',
+  /\.vercel\.app$/, // Allow all Vercel previews
+  'http://localhost:5173',
+  'http://localhost:5174',
+];
 
-app.use(cors({ origin: [CLIENT_ORIGIN, 'http://localhost:5174'], credentials: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.some(o => (typeof o === 'string' ? o === origin : o.test(origin)))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.get('/', (_req, res) => {

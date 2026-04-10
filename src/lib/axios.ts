@@ -21,12 +21,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only redirect if NOT already on the login page to avoid infinite loops
+    // and ONLY if the status is 401 (Unauthorized)
+    if (error.response?.status === 401 && !window.location.pathname.includes('/auth/login')) {
       localStorage.removeItem('lssm_token');
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
     }
     return Promise.reject(error);
   }
 );
+
 
 export default api;
