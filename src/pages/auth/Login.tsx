@@ -1,5 +1,5 @@
 import { LoginForm } from '@/components/auth/LoginForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
 import { useAuthStore } from '@/store/authStore';
 import type { UserRole } from '@/types';
@@ -20,8 +20,11 @@ const DEMO_ROLES: { role: UserRole; label: string; desc: string; emoji: string; 
 export default function LoginPage() {
   const { demoLogin } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const registered = new URLSearchParams(location.search).get('registered') === 'true';
 
   const handleDemo = (role: UserRole) => {
+
     demoLogin(role);
     if (role === 'student') navigate(ROUTES.STUDENT_DASHBOARD);
     else if (role === 'instructor') navigate(ROUTES.INSTRUCTOR_DASHBOARD);
@@ -44,6 +47,21 @@ export default function LoginPage() {
           </Link>
           <h1 className="text-[46px] sm:text-[52px] font-bold leading-[1.03] mb-2">Welcome back 👋</h1>
           <p className="text-gray-500 dark:text-gray-400 text-lg leading-7 mb-8">Sign in to continue your learning journey</p>
+          
+          {registered && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              className="mb-8 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center gap-3 text-green-700 dark:text-green-400"
+            >
+              <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-800/40 flex items-center justify-center text-lg">✅</div>
+              <div>
+                <p className="font-bold text-sm">Account Created!</p>
+                <p className="text-xs opacity-90">Please sign in with your new credentials below.</p>
+              </div>
+            </motion.div>
+          )}
+
           <LoginForm />
 
           {/* Demo login section */}
