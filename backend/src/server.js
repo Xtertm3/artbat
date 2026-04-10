@@ -93,3 +93,21 @@ app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Backend running on http://localhost:${PORT}`);
 });
+
+// Global error handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err, req, res, next) => {
+  console.error('[SERVER ERROR]', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+    body: req.body
+  });
+  
+  res.status(500).json({ 
+    message: 'Internal Server Error',
+    error: process.env.NODE_ENV === 'production' ? 'Please check server logs' : err.message
+  });
+});
+

@@ -9,33 +9,42 @@ const JWT_SECRET = process.env.JWT_SECRET || 'lssm-demo-secret';
 const JWT_EXPIRES_IN = '8h';
 
 router.post('/login', (req, res) => {
-  const { email, password } = req.body || {};
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const userRecord = getUserByEmail(String(email).toLowerCase(), true);
+    if (!userRecord || !verifyPassword(password, userRecord.password)) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign({ sub: userRecord.id, role: userRecord.role, email: userRecord.email }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+
+    res.json({
+      token,
+      user: {
+        id: userRecord.id,
+        name: userRecord.name,
+        email: userRecord.email,
+        role: userRecord.role,
+        avatar: userRecord.avatar || '',
+        isVerified: Boolean(userRecord.isVerified),
+        createdAt: userRecord.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error('[AUTH ERROR] Login crash:', error);
+    res.status(500).json({ 
+      message: 'Internal Server Error',
+      error: error.message 
+    });
   }
-
-  const userRecord = getUserByEmail(String(email).toLowerCase(), true);
-  if (!userRecord || !verifyPassword(password, userRecord.password)) {
-    return res.status(401).json({ message: 'Invalid email or password' });
-  }
-
-  const token = jwt.sign({ sub: userRecord.id, role: userRecord.role, email: userRecord.email }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN,
-  });
-
-  res.json({
-    token,
-    user: {
-      id: userRecord.id,
-      name: userRecord.name,
-      email: userRecord.email,
-      role: userRecord.role,
-      avatar: userRecord.avatar || '',
-      isVerified: Boolean(userRecord.isVerified),
-      createdAt: userRecord.createdAt,
-    },
-  });
 });
+
 
 router.post('/register', (req, res) => {
   const { name, email, password, role = 'student' } = req.body || {};

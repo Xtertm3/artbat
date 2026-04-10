@@ -124,10 +124,13 @@ function mapReviewRow(row) {
 }
 
 export function initializeDatabase() {
-  db.pragma('journal_mode = WAL');
+  try {
+    console.log('[DB] Initializing database at:', dbFile);
+    db.pragma('journal_mode = WAL');
 
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
@@ -299,7 +302,13 @@ export function initializeDatabase() {
       now
     );
   }
+} catch (error) {
+  console.error('[DB ERROR] Initialization failed:', error);
+  throw error; 
 }
+}
+
+
 
 export function hashPassword(password) {
   return bcrypt.hashSync(password, HASH_ROUNDS);
