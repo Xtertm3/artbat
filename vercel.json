@@ -5,17 +5,10 @@
 
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://artbat.onrender.com/api/$1"
-    },
-    {
-      "source": "/socket.io/(.*)",
-      "destination": "https://artbat.onrender.com/socket.io/$1"
-    },
-    {
       "source": "/((?!api|socket.io).*)",
       "destination": "/index.html"
     }
   ]
+
 
 }

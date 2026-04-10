@@ -2,8 +2,9 @@ export const APP_NAME = 'LSSM';
 export const APP_FULL_NAME = 'London Serenade School of Music';
 export const APP_DESCRIPTION = 'Master Music, Dance & Theater from Home';
 
-export const API_URL = import.meta.env.VITE_API_URL || '/api';
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:5000' : window.location.origin);
+export const API_URL = 'https://artbat.onrender.com/api';
+export const SOCKET_URL = 'https://artbat.onrender.com';
+
 
 export const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || '';
 

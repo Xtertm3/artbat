@@ -14,10 +14,12 @@ initializeDatabase();
 const ALLOWED_ORIGINS = [
   CLIENT_ORIGIN,
   'https://artbat.vercel.app',
+  'https://artbat-ankit-tiwaris-projects.vercel.app',
   /\.vercel\.app$/, // Previews
   'http://localhost:5173',
   'http://localhost:5174',
 ];
+
 
 app.use(cors({
   origin: (origin, callback) => {
