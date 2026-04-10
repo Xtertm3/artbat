@@ -11,7 +11,9 @@ const JWT_EXPIRES_IN = '8h';
 router.post('/login', (req, res) => {
   try {
     const { email, password } = req.body || {};
+    console.log('[AUTH] Login attempt for:', email);
     if (!email || !password) {
+
       return res.status(400).json({ message: 'Email and password are required' });
     }
 

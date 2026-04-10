@@ -107,7 +107,8 @@ app.use((err, req, res, next) => {
   
   res.status(500).json({ 
     message: 'Internal Server Error',
-    error: process.env.NODE_ENV === 'production' ? 'Please check server logs' : err.message
+    error: err.message // Temporarily expose for direct diagnosis of the 500 error
   });
 });
+
 
