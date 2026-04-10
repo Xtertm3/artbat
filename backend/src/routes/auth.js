@@ -49,19 +49,30 @@ router.post('/login', (req, res) => {
 
 
 router.post('/register', (req, res) => {
-  const { name, email, password, role = 'student' } = req.body || {};
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: 'Name, email, and password are required' });
-  }
+  try {
+    const { name, email, password, role = 'student' } = req.body || {};
+    console.log('[AUTH] Registration attempt for:', email);
+    
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
 
-  const existing = getUserByEmail(String(email).toLowerCase());
-  if (existing) {
-    return res.status(409).json({ message: 'Email is already registered' });
-  }
+    const existing = getUserByEmail(String(email).toLowerCase());
+    if (existing) {
+      return res.status(409).json({ message: 'Email is already registered' });
+    }
 
-  createUser({ name, email: String(email).toLowerCase(), password, role });
-  return res.status(201).json({ message: 'Registration successful' });
+    createUser({ name, email: String(email).toLowerCase(), password, role });
+    return res.status(201).json({ message: 'Registration successful' });
+  } catch (error) {
+    console.error('[AUTH ERROR] Registration crash:', error);
+    res.status(500).json({ 
+      message: 'Internal Server Error',
+      error: error.message 
+    });
+  }
 });
+
 
 router.post('/logout', requireAuth, (_req, res) => {
   return res.status(204).send();
