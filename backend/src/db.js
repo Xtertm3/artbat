@@ -13,10 +13,11 @@ if (!fs.existsSync(dataDirectory)) {
   fs.mkdirSync(dataDirectory, { recursive: true });
 }
 
-const db = new Database(dbFile);
 const HASH_ROUNDS = 10;
+export let db;
 
 function parseJson(value) {
+
   if (!value) return [];
   try {
     return JSON.parse(value);
@@ -126,7 +127,9 @@ function mapReviewRow(row) {
 export function initializeDatabase() {
   try {
     console.log('[DB] Initializing database at:', dbFile);
+    db = new Database(dbFile);
     db.pragma('journal_mode = WAL');
+
 
     db.exec(`
       CREATE TABLE IF NOT EXISTS users (
