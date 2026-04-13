@@ -14,6 +14,7 @@ import HomePage from '@/pages/public/Home';
 import StudentDashboardPage from '@/pages/student/Dashboard';
 import StudentLearningPage from '@/pages/student/Learning';
 import StudentMyCoursesPage from '@/pages/student/MyCourses';
+import StudentAssignmentsPage from '@/pages/student/Assignments';
 
 const CourseDetailPage = lazy(() => import('@/pages/public/CourseDetail'));
 const CoursesPage = lazy(() => import('@/pages/public/Courses'));
@@ -164,6 +165,17 @@ function AppRouter() {
           <ProtectedRoute allowedRoles={['student']}>
             <DashboardLayout>
               <StudentLearningPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path={ROUTES.STUDENT_ASSIGNMENTS}
+        element={
+          <ProtectedRoute allowedRoles={['student']}>
+            <DashboardLayout>
+              <StudentAssignmentsPage />
             </DashboardLayout>
           </ProtectedRoute>
         }

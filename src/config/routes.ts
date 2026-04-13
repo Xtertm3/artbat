@@ -20,6 +20,7 @@ export const ROUTES = {
   STUDENT_DASHBOARD: '/student/dashboard',
   STUDENT_MY_COURSES: '/student/my-courses',
   STUDENT_COURSE_LEARNING: '/student/courses/:id/learn',
+  STUDENT_ASSIGNMENTS: '/student/assignments',
   STUDENT_SCHEDULE: '/student/schedule',
   STUDENT_PRACTICE: '/student/practice',
   STUDENT_PROGRESS: '/student/progress',

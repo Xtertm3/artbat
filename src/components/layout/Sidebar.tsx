@@ -11,9 +11,9 @@ import { cn } from '@/lib/utils';
 const studentLinks = [
   { to: ROUTES.STUDENT_DASHBOARD, icon: Home, label: 'Dashboard' },
   { to: ROUTES.STUDENT_MY_COURSES, icon: BookOpen, label: 'My Courses' },
-  { to: ROUTES.COURSES, icon: Target, label: 'Browse Courses' },
-  { to: ROUTES.STUDENT_SCHEDULE, icon: Calendar, label: 'Schedule' },
   { to: ROUTES.STUDENT_PRACTICE, icon: Target, label: 'Practice Zone' },
+  { to: '/student/assignments', icon: Award, label: 'Assignments' }, // Using hardcoded path for now until routes.ts is updated
+  { to: ROUTES.STUDENT_SCHEDULE, icon: Calendar, label: 'Schedule' },
   { to: ROUTES.STUDENT_PROGRESS, icon: BarChart2, label: 'Progress' },
   { to: ROUTES.STUDENT_CERTIFICATES, icon: Award, label: 'Certificates' },
   { to: ROUTES.STUDENT_COMMUNITY, icon: Users, label: 'Community' },
@@ -61,7 +61,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {open && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={onClose} />}
 
       <aside className={cn(
-        'fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-40 flex flex-col transition-transform duration-300',
+        'fixed left-0 top-16 bottom-0 w-64 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-800/50 z-40 flex flex-col transition-all duration-300 shadow-xl shadow-black/5',
         open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       )}>
         {/* Mobile close */}
@@ -77,32 +77,32 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               to={to}
               onClick={onClose}
               className={({ isActive }) => cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all active:scale-[0.98] group',
                 isActive
-                  ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400 font-bold shadow-sm ring-1 ring-primary-500/20'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-100'
               )}
             >
-              <Icon size={18} />
+              <Icon size={18} className={cn("transition-transform group-hover:scale-110")} />
               {label}
             </NavLink>
           ))}
         </nav>
 
         {/* User info + logout */}
-        <div className="p-3 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex items-center gap-3 px-2 py-2 mb-1">
-            <div className="w-9 h-9 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold shrink-0">
+        <div className="p-4 border-t border-gray-200/50 dark:border-gray-800/50 bg-gray-50/30 dark:bg-gray-800/20">
+          <div className="flex items-center gap-3 px-2 py-2 mb-2">
+            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg shadow-primary-500/20">
               {getInitials(user?.name || 'U')}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium truncate">{user?.name}</p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              <p className="text-sm font-bold truncate">{user?.name}</p>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">{user?.role}</p>
             </div>
           </div>
           <button
             onClick={() => { logout(); navigate('/login'); }}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-500/10 active:scale-95 transition-all"
           >
             <LogOut size={18} /> Logout
           </button>
