@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Award, BookOpen, Clock, CheckCircle2, 
-  ChevronRight, Play, Star, BookMarked, Sparkles
-} from 'lucide-react';
+import { Award, BookOpen, Clock, CheckCircle2, ChevronRight, Play, Star, BookMarked, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import { VirtualAssessment } from '@/components/student/VirtualAssessment';
 import { cn } from '@/lib/utils';
+import { useAudio } from '@/hooks/useAudio';
 
 interface Assignment {
   id: string;
@@ -76,6 +74,7 @@ const DEMO_ASSIGNMENTS: Assignment[] = [
 ];
 
 export default function AssignmentsPage() {
+  const { unlockAudio, isAudioRunning } = useAudio();
   const [activeAssignment, setActiveAssignment] = useState<typeof DEMO_ASSIGNMENTS[0] | null>(null);
 
   const handleComplete = (score: number) => {
@@ -97,17 +96,32 @@ export default function AssignmentsPage() {
           <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">Test your skills with interactive assessments and earn certifications.</p>
         </div>
         
-        <div className="flex items-center gap-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-          <div className="flex -space-x-3">
-             {[1,2,3].map(i => (
-               <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-900 gradient-bg flex items-center justify-center text-white text-xs font-bold shadow-md">
-                 U{i}
-               </div>
-             ))}
-          </div>
-          <div className="text-sm">
-            <span className="font-bold text-primary-600">12 Pending Tasks</span>
-            <p className="text-gray-400 text-xs">Keep up the great work!</p>
+        <div className="flex items-center gap-4">
+          {!isAudioRunning && (
+            <motion.button
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={unlockAudio}
+              className="px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-xl text-sm font-bold flex items-center gap-2 border border-amber-200 dark:border-amber-800 shadow-sm transition-all"
+            >
+              <VolumeX size={18} /> Enable Audio
+            </motion.button>
+          )}
+          
+          <div className="flex items-center gap-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+            <div className="flex -space-x-3">
+               {[1,2,3].map(i => (
+                 <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-900 gradient-bg flex items-center justify-center text-white text-xs font-bold shadow-md">
+                   U{i}
+                 </div>
+               ))}
+            </div>
+            <div className="text-sm">
+              <span className="font-bold text-primary-600">12 Pending Tasks</span>
+              <p className="text-gray-400 text-xs">Keep up the great work!</p>
+            </div>
           </div>
         </div>
       </header>

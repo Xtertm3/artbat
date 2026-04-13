@@ -1,32 +1,29 @@
 import { useCallback, useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
-// Persistent Singletons to prevent re-initializing on component remounts
+// Persistent Singletons
 let PIANO_ENGINE: Tone.PolySynth | null = null;
 let GUITAR_ENGINE: Tone.PolySynth | null = null;
+let MASTER_REVERB: Tone.Reverb | null = null;
 
 const initializeSynthesisEngines = () => {
   if (PIANO_ENGINE && GUITAR_ENGINE) return;
 
-  console.log('--- Initializing ArtBeat Synthesis Engine (Instant) ---');
+  console.log('--- Initializing ArtBeat Audio Engine ---');
 
-  // Multi-layered Piano Synth
+  MASTER_REVERB = new Tone.Reverb(1.5).toDestination();
+
   PIANO_ENGINE = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: 'sine' },
     envelope: {
       attack: 0.005,
       decay: 0.1,
       sustain: 0.3,
-      release: 1
+      release: 0.8
     },
-    volume: -8
-  }).toDestination();
+    volume: -2 // Increased volume
+  }).connect(MASTER_REVERB);
 
-  // Add a subtle reverb/delay for a more "acoustic" feel to the synthesis
-  const reverb = new Tone.Reverb(1.5).toDestination();
-  PIANO_ENGINE.connect(reverb);
-
-  // Guitar-like Synth using FM Synthesis for string character
   GUITAR_ENGINE = new Tone.PolySynth(Tone.FMSynth, {
     harmonicity: 3,
     modulationIndex: 10,
@@ -37,54 +34,69 @@ const initializeSynthesisEngines = () => {
       sustain: 0.1,
       release: 1.2
     },
-    modulation: { type: 'square' },
-    modulationEnvelope: {
-      attack: 0.5,
-      decay: 0,
-      sustain: 1,
-      release: 0.5
-    },
-    volume: -12
-  }).toDestination();
-  
-  GUITAR_ENGINE.connect(reverb);
+    volume: -6 // Increased volume
+  }).connect(MASTER_REVERB);
 };
 
 export function useAudio() {
   const [isReady, setIsReady] = useState(false);
+  const [isAudioRunning, setIsAudioRunning] = useState(false);
 
   useEffect(() => {
     initializeSynthesisEngines();
-    // Synthesis is virtually instant
     setIsReady(true);
+    
+    // Check initial state
+    setIsAudioRunning(Tone.getContext().state === 'running');
+
+    // Subscribe to state changes
+    const checkState = () => {
+      setIsAudioRunning(Tone.getContext().state === 'running');
+    };
+    
+    // Some browsers don't support the 'statechange' event reliably on Context
+    const interval = setInterval(checkState, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const unlockAudio = useCallback(async () => {
+    console.log('--- Attempting to Unlock Audio ---');
+    try {
+      await Tone.start();
+      setIsAudioRunning(Tone.getContext().state === 'running');
+      console.log('Audio State:', Tone.getContext().state);
+      
+      // Play a tiny silent note to force initialization
+      PIANO_ENGINE?.triggerAttackRelease("C4", "8n", "+0.1", 0);
+    } catch (err) {
+      console.error('Unlock error:', err);
+    }
   }, []);
 
   const playPianoNote = useCallback(async (note: string) => {
-    try {
-      if (Tone.getContext().state !== 'running') {
-        await Tone.start();
-      }
-      PIANO_ENGINE?.triggerAttack(note);
-    } catch (err) {
-      console.error('Audio Error:', err);
+    if (Tone.getContext().state !== 'running') {
+      await unlockAudio();
     }
-  }, []);
+    PIANO_ENGINE?.triggerAttack(note);
+  }, [unlockAudio]);
 
   const stopPianoNote = useCallback((note: string) => {
     PIANO_ENGINE?.triggerRelease(note);
   }, []);
 
   const playGuitarNote = useCallback(async (note: string) => {
-    try {
-      if (Tone.getContext().state !== 'running') {
-        await Tone.start();
-      }
-      // Use triggerAttackRelease with a long release for guitar strings
-      GUITAR_ENGINE?.triggerAttackRelease(note, "1n");
-    } catch (err) {
-      console.error('Audio Error:', err);
+    if (Tone.getContext().state !== 'running') {
+      await unlockAudio();
     }
-  }, []);
+    GUITAR_ENGINE?.triggerAttackRelease(note, "1n");
+  }, [unlockAudio]);
 
-  return { playPianoNote, stopPianoNote, playGuitarNote, isAudioLoaded: isReady };
+  return { 
+    playPianoNote, 
+    stopPianoNote, 
+    playGuitarNote, 
+    unlockAudio,
+    isAudioLoaded: isReady,
+    isAudioRunning
+  };
 }

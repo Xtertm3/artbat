@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, ArrowRight, RefreshCw, Music, CheckCircle2, XCircle, Star } from 'lucide-react';
+import { Trophy, ArrowRight, RefreshCw, Music, CheckCircle2, XCircle, Star, VolumeX } from 'lucide-react';
 import { VirtualPiano } from '../instruments/VirtualPiano';
 import { VirtualGuitar } from '../instruments/VirtualGuitar';
 import { cn } from '@/lib/utils';
@@ -29,7 +29,7 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
   const [status, setStatus] = useState<'idle' | 'success' | 'fail'>('idle');
   const [attempts, setAttempts] = useState(0);
   const [completed, setCompleted] = useState(false);
-  const { isAudioLoaded } = useAudio();
+  const { isAudioLoaded, isAudioRunning, unlockAudio } = useAudio();
 
   const currentQuestion = questions[currentIndex];
 
@@ -223,6 +223,28 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Unmute Overlay */}
+          {!isAudioRunning && isAudioLoaded && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 z-40 flex items-center justify-center bg-transparent backdrop-blur-[2px]"
+            >
+              <button
+                onClick={unlockAudio}
+                className="group flex flex-col items-center gap-4 p-8 rounded-3xl bg-white dark:bg-gray-900 shadow-2xl border border-gray-100 dark:border-gray-800 hover:scale-105 transition-all"
+              >
+                <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center text-amber-600 animate-pulse">
+                  <VolumeX size={32} />
+                </div>
+                <div className="text-center">
+                  <p className="font-black text-xl text-gray-900 dark:text-white">Audio Muted</p>
+                  <p className="text-sm text-gray-500 font-medium">Click anywhere to enable instrument sound</p>
+                </div>
+              </button>
+            </motion.div>
+          )}
 
           {/* Feedback Overlay */}
           <AnimatePresence>
