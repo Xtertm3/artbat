@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Music, ArrowLeft, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { VirtualPiano } from '@/components/instruments/VirtualPiano';
 import { VirtualGuitar } from '@/components/instruments/VirtualGuitar';
+import { VirtualViolin } from '@/components/instruments/VirtualViolin';
+import { VirtualDrums } from '@/components/instruments/VirtualDrums';
 import { useAudio } from '@/hooks/useAudio';
 import { cn } from '@/lib/utils';
 
 export default function PracticePage() {
-  const [selectedInstrument, setSelectedInstrument] = useState<'piano' | 'guitar' | null>(null);
+  const [selectedInstrument, setSelectedInstrument] = useState<'piano' | 'guitar' | 'violin' | 'drums' | null>(null);
   const { isAudioRunning, unlockAudio } = useAudio();
 
   return (
@@ -83,6 +85,44 @@ export default function PracticePage() {
                 Select Instrument
               </div>
             </motion.button>
+
+            {/* Violin Option */}
+            <motion.button
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setSelectedInstrument('violin')}
+              className="group relative h-80 rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl hover:shadow-red-500/10 transition-all flex flex-col items-center justify-center p-8"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-rose-50/50 dark:from-red-950/20 dark:to-rose-950/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-24 h-24 bg-red-100 dark:bg-red-900/30 rounded-3xl flex items-center justify-center text-red-600 dark:text-red-400 mb-6 group-hover:scale-110 transition-transform">
+                <Music size={48} />
+              </div>
+              <h2 className="text-3xl font-black mb-2 tracking-tight">Virtual Violin</h2>
+              <p className="text-gray-500 dark:text-gray-400 font-medium">Bowed fretless masterpiece</p>
+              
+              <div className="mt-8 px-6 py-2 bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-bold rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">
+                Select Instrument
+              </div>
+            </motion.button>
+
+            {/* Drums Option */}
+            <motion.button
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setSelectedInstrument('drums')}
+              className="group relative h-80 rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all flex flex-col items-center justify-center p-8"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-24 h-24 bg-emerald-100 dark:bg-emerald-900/30 rounded-3xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                <Music size={48} />
+              </div>
+              <h2 className="text-3xl font-black mb-2 tracking-tight">Virtual Drums</h2>
+              <p className="text-gray-500 dark:text-gray-400 font-medium">6-pad rhythmic launchpad</p>
+              
+              <div className="mt-8 px-6 py-2 bg-gray-900 dark:bg-white text-white dark:text-black text-sm font-bold rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                Select Instrument
+              </div>
+            </motion.button>
           </motion.div>
         ) : (
           <motion.div
@@ -131,8 +171,12 @@ export default function PracticePage() {
               <div className="flex justify-center max-w-full overflow-x-auto pb-4">
                 {selectedInstrument === 'piano' ? (
                   <VirtualPiano className="scale-110 origin-top pt-8" />
-                ) : (
+                ) : selectedInstrument === 'guitar' ? (
                   <VirtualGuitar className="scale-110 origin-top pt-8" />
+                ) : selectedInstrument === 'violin' ? (
+                  <VirtualViolin className="scale-110 origin-top pt-8" />
+                ) : (
+                  <VirtualDrums className="scale-110 origin-top pt-8" />
                 )}
               </div>
               

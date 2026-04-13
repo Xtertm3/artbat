@@ -10,7 +10,7 @@ interface Assignment {
   title: string;
   courseName: string;
   type: string;
-  instrument: 'piano' | 'guitar';
+  instrument: 'piano' | 'guitar' | 'violin' | 'drums';
   difficulty: string;
   timeEst: string;
   points: number;
@@ -18,10 +18,11 @@ interface Assignment {
   score?: number;
   questions?: {
     id: string;
-    type: 'piano' | 'guitar';
+    type: 'piano' | 'guitar' | 'violin' | 'drums';
     instruction: string;
     targetNote?: string;
     guitarPosition?: { s: number; f: number };
+    drumType?: 'kick' | 'snare' | 'hihat';
   }[];
 }
 
@@ -63,13 +64,32 @@ const DEMO_ASSIGNMENTS: Assignment[] = [
     id: 'a3',
     title: 'Rhythm Basics',
     courseName: 'Music Theory 101',
-    type: 'Theory',
-    instrument: 'piano',
-    difficulty: 'Intermediate',
-    timeEst: '15 min',
-    points: 100,
-    status: 'completed',
-    score: 95,
+    type: 'Practical',
+    instrument: 'drums',
+    difficulty: 'Beginner',
+    timeEst: '5 min',
+    points: 40,
+    status: 'pending',
+    questions: [
+      { id: 'd1', type: 'drums', instruction: 'Hit the Kick Drum (Bottom Left)', drumType: 'kick' },
+      { id: 'd2', type: 'drums', instruction: 'Hit the Snare Drum (Top Center)', drumType: 'snare' },
+      { id: 'd3', type: 'drums', instruction: 'Play the Hi-Hat (Top Right)', drumType: 'hihat' },
+    ]
+  },
+  {
+    id: 'a4',
+    title: 'Violin Bowing Introduction',
+    courseName: 'Western Classical 101',
+    type: 'Practical',
+    instrument: 'violin',
+    difficulty: 'Beginner',
+    timeEst: '12 min',
+    points: 60,
+    status: 'pending',
+    questions: [
+      { id: 'v1', type: 'violin', instruction: 'Play the open E string', targetNote: 'E5' },
+      { id: 'v2', type: 'violin', instruction: 'Play the A string', targetNote: 'A4' },
+    ]
   }
 ];
 

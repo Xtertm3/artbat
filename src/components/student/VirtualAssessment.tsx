@@ -3,16 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, ArrowRight, RefreshCw, Music, CheckCircle2, XCircle, Star, VolumeX } from 'lucide-react';
 import { VirtualPiano } from '../instruments/VirtualPiano';
 import { VirtualGuitar } from '../instruments/VirtualGuitar';
+import { VirtualViolin } from '../instruments/VirtualViolin';
+import { VirtualDrums } from '../instruments/VirtualDrums';
 import { cn } from '@/lib/utils';
 import confetti from 'canvas-confetti';
 
 interface Question {
   id: string;
-  type: 'piano' | 'guitar';
+  type: 'piano' | 'guitar' | 'violin' | 'drums';
   instruction: string;
   targetNote?: string;
   targetChord?: string[]; // For piano chords or guitar positions
   guitarPosition?: { s: number; f: number };
+  drumType?: 'kick' | 'snare' | 'hihat';
 }
 
 interface VirtualAssessmentProps {
@@ -58,6 +61,24 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
     if (status !== 'idle') return;
 
     if (currentQuestion.guitarPosition?.s === sIdx && currentQuestion.guitarPosition?.f === fIdx) {
+      handleSuccess();
+    } else {
+      handleFail();
+    }
+  };
+
+  const handleViolinInput = (note: string) => {
+    if (status !== 'idle') return;
+    if (note === currentQuestion.targetNote) {
+      handleSuccess();
+    } else {
+      handleFail();
+    }
+  };
+
+  const handleDrumInput = (type: 'kick' | 'snare' | 'hihat') => {
+    if (status !== 'idle') return;
+    if (type === currentQuestion.drumType) {
       handleSuccess();
     } else {
       handleFail();
@@ -210,9 +231,18 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
                       status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
                     )}
                   />
+                ) : currentQuestion.type === 'violin' ? (
+                  <VirtualViolin 
+                    onNotePress={handleViolinInput}
+                    className={cn(
+                      "transition-all duration-300",
+                      status === 'success' && "ring-8 ring-green-500/20 scale-105",
+                      status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
+                    )}
+                  />
                 ) : (
-                  <VirtualGuitar 
-                    onNotePress={handleGuitarInput}
+                  <VirtualDrums 
+                    onPadPress={handleDrumInput}
                     className={cn(
                       "transition-all duration-300",
                       status === 'success' && "ring-8 ring-green-500/20 scale-105",
