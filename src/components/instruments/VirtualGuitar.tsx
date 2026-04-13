@@ -2,9 +2,24 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+import { useAudio } from '@/hooks/useAudio';
+
 // Standard tuning: E2, A2, D3, G3, B3, E4
 const STRINGS = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
 const FRETS = [0, 1, 2, 3, 4, 5]; // Open string + 5 frets
+
+// Note mapping utility
+const getNoteFromPosition = (stringIndex: number, fret: number) => {
+  const stringNotes = [
+    ['E4', 'F4', 'F#4', 'G4', 'G#4', 'A4'], // High E
+    ['B3', 'C4', 'C#4', 'D4', 'D#4', 'E4'], // B
+    ['G3', 'G#3', 'A3', 'A#3', 'B3', 'C4'], // G
+    ['D3', 'D#3', 'E3', 'F3', 'F#3', 'G3'], // D
+    ['A2', 'A#2', 'B2', 'C3', 'C#3', 'D3'], // A
+    ['E2', 'F2', 'F#2', 'G2', 'G#2', 'A2'], // Low E
+  ];
+  return stringNotes[stringIndex][fret];
+};
 
 interface VirtualGuitarProps {
   onNotePress?: (stringIndex: number, fret: number) => void;
@@ -13,9 +28,12 @@ interface VirtualGuitarProps {
 
 export function VirtualGuitar({ onNotePress, className }: VirtualGuitarProps) {
   const [activeNote, setActiveNote] = useState<{ s: number; f: number } | null>(null);
+  const { playGuitarNote } = useAudio();
 
   const handlePress = (sIdx: number, fIdx: number) => {
+    const note = getNoteFromPosition(sIdx, fIdx);
     setActiveNote({ s: sIdx, f: fIdx });
+    playGuitarNote(note);
     onNotePress?.(sIdx, fIdx);
     setTimeout(() => setActiveNote(null), 300); // Visual feedback auto-reset
   };

@@ -60,6 +60,8 @@ const NOTES = [
   { note: 'C2', isBlack: false, label: 'C' },
 ];
 
+import { useAudio } from '@/hooks/useAudio';
+
 interface VirtualPianoProps {
   onKeyPress?: (note: string) => void;
   highlightNotes?: string[];
@@ -68,9 +70,11 @@ interface VirtualPianoProps {
 
 export function VirtualPiano({ onKeyPress, highlightNotes = [], className }: VirtualPianoProps) {
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
+  const { playPianoNote, stopPianoNote } = useAudio();
 
   const handlePress = (note: string) => {
     setPressedKeys(prev => new Set(prev).add(note));
+    playPianoNote(note);
     onKeyPress?.(note);
   };
 
@@ -80,6 +84,7 @@ export function VirtualPiano({ onKeyPress, highlightNotes = [], className }: Vir
       next.delete(note);
       return next;
     });
+    stopPianoNote(note);
   };
 
   return (
