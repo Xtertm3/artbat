@@ -32,10 +32,19 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       )}
 
       {/* Logo */}
-      <Link to="/" className="flex items-center gap-2 font-bold text-lg shrink-0">
+      <Link to="/" className="flex items-center gap-2 font-bold text-lg shrink-0 mr-4">
         <span className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center text-white text-sm font-bold">L</span>
         <span className="hidden sm:block gradient-text">{APP_NAME}</span>
       </Link>
+
+      {/* Main Nav */}
+      <nav className="hidden lg:flex items-center gap-6 mr-4">
+        <Link to={ROUTES.COURSES} className="text-sm font-medium hover:text-primary-600 transition">Courses</Link>
+        <Link to={ROUTES.EXPLORE_ARTS} className="text-sm font-medium hover:text-primary-600 transition">Explore</Link>
+        <Link to={ROUTES.PRICING} className="text-sm font-medium hover:text-primary-600 transition">Pricing</Link>
+        <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition">Contact</Link>
+      </nav>
+
 
       {/* Search */}
       <div className="flex-1 max-w-md mx-auto hidden md:block">

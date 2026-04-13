@@ -87,6 +87,40 @@ app.use('/api/auth', authRoutes);
 app.use('/api/instructor', instructorRoutes);
 app.use('/api', courseRoutes);
 
+// Contact endpoint
+app.post('/api/contact', (req, res) => {
+  const { name, email, subject, message } = req.body || {};
+  
+  if (!name || !email || !message) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  console.log('[CONTACT FORM SUBMISSION]', { name, email, subject, message });
+
+  // In a real production environment, you would use nodemailer here:
+  /*
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: `"${name}" <${email}>`,
+    to: "info@lssm.co.in",
+    subject: `Contact Form: ${subject || 'No Subject'}`,
+    text: message,
+  });
+  */
+
+  res.json({ message: 'Thank you for contacting us! We will get back to you shortly.' });
+});
+
+
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });

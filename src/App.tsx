@@ -18,8 +18,11 @@ import StudentMyCoursesPage from '@/pages/student/MyCourses';
 const CourseDetailPage = lazy(() => import('@/pages/public/CourseDetail'));
 const CoursesPage = lazy(() => import('@/pages/public/Courses'));
 const ExploreArtsPage = lazy(() => import('@/pages/public/ExploreArts'));
+const PricingPage = lazy(() => import('@/pages/public/Pricing'));
+const ContactPage = lazy(() => import('@/pages/public/Contact'));
 const AdminDashboardPage = lazy(() => import('@/pages/admin/Dashboard'));
 const InstructorDashboardPage = lazy(() => import('@/pages/instructor/Dashboard'));
+
 
 
 function RouteSkeleton() {
@@ -113,6 +116,25 @@ function AppRouter() {
           </PublicLayout>
         }
       />
+
+      <Route
+        path={ROUTES.PRICING}
+        element={
+          <PublicLayout>
+            <PricingPage />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path={ROUTES.CONTACT}
+        element={
+          <PublicLayout>
+            <ContactPage />
+          </PublicLayout>
+        }
+      />
+
 
       <Route
         path={ROUTES.STUDENT_DASHBOARD}
