@@ -45,19 +45,19 @@ function PianoKey({ note, isBlack, isPressed, onPress, onRelease, label }: KeyPr
 }
 
 const NOTES = [
-  { note: 'C', isBlack: false },
-  { note: 'C#', isBlack: true },
-  { note: 'D', isBlack: false },
-  { note: 'D#', isBlack: true },
-  { note: 'E', isBlack: false },
-  { note: 'F', isBlack: false },
-  { note: 'F#', isBlack: true },
-  { note: 'G', isBlack: false },
-  { note: 'G#', isBlack: true },
-  { note: 'A', isBlack: false },
-  { note: 'A#', isBlack: true },
-  { note: 'B', isBlack: false },
-  { note: 'C2', isBlack: false, label: 'C' },
+  { note: 'C4', isBlack: false, label: 'C' },
+  { note: 'C#4', isBlack: true, label: 'C#' },
+  { note: 'D4', isBlack: false, label: 'D' },
+  { note: 'D#4', isBlack: true, label: 'D#' },
+  { note: 'E4', isBlack: false, label: 'E' },
+  { note: 'F4', isBlack: false, label: 'F' },
+  { note: 'F#4', isBlack: true, label: 'F#' },
+  { note: 'G4', isBlack: false, label: 'G' },
+  { note: 'G#4', isBlack: true, label: 'G#' },
+  { note: 'A4', isBlack: false, label: 'A' },
+  { note: 'A#4', isBlack: true, label: 'A#' },
+  { note: 'B4', isBlack: false, label: 'B' },
+  { note: 'C5', isBlack: false, label: 'C' },
 ];
 
 import { useAudio } from '@/hooks/useAudio';

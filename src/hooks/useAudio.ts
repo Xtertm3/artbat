@@ -77,7 +77,9 @@ export function useAudio() {
     if (Tone.getContext().state !== 'running') {
       await unlockAudio();
     }
-    PIANO_ENGINE?.triggerAttack(note);
+    // Ensure the note has an octave (e.g. C -> C4)
+    const processedNote = /^[A-G]#?\d$/.test(note) ? note : `${note}4`;
+    PIANO_ENGINE?.triggerAttack(processedNote);
   }, [unlockAudio]);
 
   const stopPianoNote = useCallback((note: string) => {

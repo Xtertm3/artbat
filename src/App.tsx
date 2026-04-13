@@ -15,6 +15,7 @@ import StudentDashboardPage from '@/pages/student/Dashboard';
 import StudentLearningPage from '@/pages/student/Learning';
 import StudentMyCoursesPage from '@/pages/student/MyCourses';
 import StudentAssignmentsPage from '@/pages/student/Assignments';
+import PracticePage from '@/pages/student/Practice';
 
 const CourseDetailPage = lazy(() => import('@/pages/public/CourseDetail'));
 const CoursesPage = lazy(() => import('@/pages/public/Courses'));
@@ -38,7 +39,6 @@ function RouteSkeleton() {
 
 const studentPages = [
   { path: ROUTES.STUDENT_SCHEDULE, title: 'Schedule' },
-  { path: ROUTES.STUDENT_PRACTICE, title: 'Practice Zone' },
   { path: ROUTES.STUDENT_PROGRESS, title: 'Progress' },
   { path: ROUTES.STUDENT_CERTIFICATES, title: 'Certificates' },
   { path: ROUTES.STUDENT_COMMUNITY, title: 'Community' },
@@ -176,6 +176,17 @@ function AppRouter() {
           <ProtectedRoute allowedRoles={['student']}>
             <DashboardLayout>
               <StudentAssignmentsPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path={ROUTES.STUDENT_PRACTICE}
+        element={
+          <ProtectedRoute allowedRoles={['student']}>
+            <DashboardLayout>
+              <PracticePage />
             </DashboardLayout>
           </ProtectedRoute>
         }
