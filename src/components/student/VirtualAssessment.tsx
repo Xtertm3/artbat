@@ -21,12 +21,15 @@ interface VirtualAssessmentProps {
   title: string;
 }
 
+import { useAudio } from '@/hooks/useAudio';
+
 export function VirtualAssessment({ questions, onComplete, title }: VirtualAssessmentProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState<'idle' | 'success' | 'fail'>('idle');
   const [attempts, setAttempts] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const { isAudioLoaded } = useAudio();
 
   const currentQuestion = questions[currentIndex];
 
@@ -174,35 +177,51 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
         </div>
 
         {/* Instrument Container */}
-        <div className="p-12 relative">
+        <div className="p-12 relative min-h-[300px]">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={currentQuestion.id}
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.05, opacity: 0 }}
-              className="flex justify-center"
-            >
-              {currentQuestion.type === 'piano' ? (
-                <VirtualPiano 
-                  onKeyPress={handlePianoInput} 
-                  className={cn(
-                    "transition-all duration-300",
-                    status === 'success' && "ring-8 ring-green-500/20 scale-105",
-                    status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
-                  )}
-                />
-              ) : (
-                <VirtualGuitar 
-                  onNotePress={handleGuitarInput}
-                  className={cn(
-                    "transition-all duration-300",
-                    status === 'success' && "ring-8 ring-green-500/20 scale-105",
-                    status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
-                  )}
-                />
-              )}
-            </motion.div>
+            {!isAudioLoaded ? (
+               <motion.div 
+                 key="audio-loader"
+                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                 className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-md"
+               >
+                 <div className="flex flex-col items-center gap-4">
+                   <div className="w-12 h-12 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin" />
+                   <div className="text-center">
+                     <p className="font-bold text-lg">Initializing Instruments...</p>
+                     <p className="text-sm text-gray-500">Tuning strings and keys for you</p>
+                   </div>
+                 </div>
+               </motion.div>
+            ) : (
+              <motion.div
+                key={currentQuestion.id}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.05, opacity: 0 }}
+                className="flex justify-center"
+              >
+                {currentQuestion.type === 'piano' ? (
+                  <VirtualPiano 
+                    onKeyPress={handlePianoInput} 
+                    className={cn(
+                      "transition-all duration-300",
+                      status === 'success' && "ring-8 ring-green-500/20 scale-105",
+                      status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
+                    )}
+                  />
+                ) : (
+                  <VirtualGuitar 
+                    onNotePress={handleGuitarInput}
+                    className={cn(
+                      "transition-all duration-300",
+                      status === 'success' && "ring-8 ring-green-500/20 scale-105",
+                      status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
+                    )}
+                  />
+                )}
+              </motion.div>
+            )}
           </AnimatePresence>
 
           {/* Feedback Overlay */}
