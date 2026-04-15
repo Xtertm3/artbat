@@ -168,7 +168,7 @@ export default function PracticePage() {
                 </motion.div>
               )}
 
-              <div className="flex justify-center max-w-full overflow-x-auto pb-4">
+              <div className="flex justify-start max-w-full overflow-x-auto pb-4 scroll-smooth custom-scrollbar">
                 {selectedInstrument === 'piano' ? (
                   <VirtualPiano className="scale-110 origin-top pt-8" />
                 ) : selectedInstrument === 'guitar' ? (

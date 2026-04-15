@@ -50,7 +50,12 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
   const handlePianoInput = (note: string) => {
     if (status !== 'idle') return;
 
-    if (note === currentQuestion.targetNote) {
+    // If targetNote specifies an octave (e.g. 'C4'), require exact match.
+    // If it's just 'C', any C in any octave works.
+    const hasOctave = /\d/.test(currentQuestion.targetNote || '');
+    const pressedNote = hasOctave ? note : note.replace(/\d/g, '');
+
+    if (pressedNote === currentQuestion.targetNote) {
       handleSuccess();
     } else {
       handleFail();
@@ -222,7 +227,7 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
                 exit={{ scale: 1.05, opacity: 0 }}
                 className="flex justify-center"
               >
-                {currentQuestion.type === 'piano' ? (
+                                {currentQuestion.type.toLowerCase() === 'piano' ? (
                   <VirtualPiano 
                     onKeyPress={handlePianoInput} 
                     className={cn(
@@ -231,9 +236,18 @@ export function VirtualAssessment({ questions, onComplete, title }: VirtualAsses
                       status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
                     )}
                   />
-                ) : currentQuestion.type === 'violin' ? (
+                                ) : currentQuestion.type.toLowerCase() === 'violin' ? (
                   <VirtualViolin 
                     onNotePress={handleViolinInput}
+                    className={cn(
+                      "transition-all duration-300",
+                      status === 'success' && "ring-8 ring-green-500/20 scale-105",
+                      status === 'fail' && "ring-8 ring-red-500/20 translate-x-1"
+                    )}
+                  />
+                ) : currentQuestion.type.toLowerCase() === 'guitar' ? (
+                  <VirtualGuitar 
+                    onNotePress={handleGuitarInput}
                     className={cn(
                       "transition-all duration-300",
                       status === 'success' && "ring-8 ring-green-500/20 scale-105",
