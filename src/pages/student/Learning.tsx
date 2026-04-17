@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2, PlayCircle } from 'lucide-react';
 import { Curriculum } from '@/components/course/Curriculum';
+import { LessonPlayer } from '@/components/student/LessonPlayer';
 import { ROUTES } from '@/config/routes';
 import { useCourse, useMarkLessonComplete } from '@/hooks/useCourses';
 import { formatDuration } from '@/lib/utils';
@@ -36,8 +37,8 @@ function buildFallbackCourse(id: string): Course {
         title: 'Getting Started',
         order: 1,
         lessons: [
-          { id: 'l-1', title: 'Welcome and Setup', type: 'video', duration: 8, isPreview: true, order: 1 },
-          { id: 'l-2', title: 'Posture and Hand Position', type: 'video', duration: 12, isPreview: false, order: 2 },
+          { id: 'l-1', title: 'Welcome and Setup', type: 'video', duration: 8, isPreview: true, order: 1, videoUrl: 'https://www.youtube.com/embed/j_8qA5zLp8I' },
+          { id: 'l-2', title: 'Posture and Hand Position', type: 'video', duration: 12, isPreview: false, order: 2, videoUrl: 'https://www.youtube.com/embed/zWd_lXp1AUI' },
           { id: 'l-3', title: 'First Chords Practice', type: 'assignment', duration: 10, isPreview: false, order: 3 },
         ],
       },
@@ -46,8 +47,8 @@ function buildFallbackCourse(id: string): Course {
         title: 'Rhythm and Flow',
         order: 2,
         lessons: [
-          { id: 'l-4', title: 'Strumming Patterns', type: 'video', duration: 14, isPreview: false, order: 1 },
-          { id: 'l-5', title: 'Song Walkthrough', type: 'video', duration: 18, isPreview: false, order: 2 },
+          { id: 'l-4', title: 'Strumming Patterns', type: 'video', duration: 14, isPreview: false, order: 1, videoUrl: 'https://www.youtube.com/embed/A8S18671kU4' },
+          { id: 'l-5', title: 'Song Walkthrough', type: 'video', duration: 18, isPreview: false, order: 2, videoUrl: 'https://www.youtube.com/embed/j_8qA5zLp8I' },
           { id: 'l-6', title: 'Weekly Progress Check', type: 'quiz', duration: 16, isPreview: false, order: 3 },
         ],
       },
@@ -111,15 +112,11 @@ export default function StudentLearningPage() {
             </button>
           </div>
 
-          <div className="rounded-xl bg-gray-100 dark:bg-gray-800 h-56 flex items-center justify-center text-center p-6">
-            <div>
-              <PlayCircle size={34} className="mx-auto mb-3 text-primary-600" />
-              <p className="font-semibold">Lesson player UI placeholder</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Video, quiz, and assignment rendering will be connected in the next frontend pass.
-              </p>
-            </div>
-          </div>
+          <LessonPlayer 
+            videoUrl={currentLesson?.videoUrl} 
+            title={currentLesson?.title} 
+            onEnded={markCurrentLessonComplete}
+          />
         </article>
       </section>
 
