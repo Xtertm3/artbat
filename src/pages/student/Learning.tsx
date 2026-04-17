@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2, PlayCircle } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Curriculum } from '@/components/course/Curriculum';
 import { LessonPlayer } from '@/components/student/LessonPlayer';
 import { ROUTES } from '@/config/routes';
@@ -8,68 +8,44 @@ import { useCourse, useMarkLessonComplete } from '@/hooks/useCourses';
 import { formatDuration } from '@/lib/utils';
 import type { Course, Lesson } from '@/types';
 
-function buildFallbackCourse(id: string): Course {
-  return {
-    id,
-    title: 'Guitar Foundations Bootcamp',
-    description: 'A practical beginner path to rhythm, chords, and songs.',
-    shortDescription: 'Play your first songs in 2 weeks.',
-    thumbnail: '',
-    category: 'music',
-    subcategory: 'guitar',
-    level: 'beginner',
-    language: 'English',
-    price: 0,
-    instructor: { id: 'i-1', name: 'James Wilson', rating: 4.9 },
-    rating: 4.9,
-    totalReviews: 120,
-    totalStudents: 3400,
-    totalLessons: 6,
-    totalDuration: 78,
-    tags: ['guitar', 'music'],
-    isPublished: true,
-    isFeatured: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    modules: [
-      {
-        id: 'm-1',
-        title: 'Getting Started',
-        order: 1,
-        lessons: [
-          { id: 'l-1', title: 'Welcome and Setup', type: 'video', duration: 8, isPreview: true, order: 1, videoUrl: 'https://www.youtube.com/embed/j_8qA5zLp8I' },
-          { id: 'l-2', title: 'Posture and Hand Position', type: 'video', duration: 12, isPreview: false, order: 2, videoUrl: 'https://www.youtube.com/embed/zWd_lXp1AUI' },
-          { id: 'l-3', title: 'First Chords Practice', type: 'assignment', duration: 10, isPreview: false, order: 3 },
-        ],
-      },
-      {
-        id: 'm-2',
-        title: 'Rhythm and Flow',
-        order: 2,
-        lessons: [
-          { id: 'l-4', title: 'Strumming Patterns', type: 'video', duration: 14, isPreview: false, order: 1, videoUrl: 'https://www.youtube.com/embed/A8S18671kU4' },
-          { id: 'l-5', title: 'Song Walkthrough', type: 'video', duration: 18, isPreview: false, order: 2, videoUrl: 'https://www.youtube.com/embed/j_8qA5zLp8I' },
-          { id: 'l-6', title: 'Weekly Progress Check', type: 'quiz', duration: 16, isPreview: false, order: 3 },
-        ],
-      },
-    ],
-  };
-}
-
 export default function StudentLearningPage() {
-  const { id = 'demo-course' } = useParams();
-  const { data } = useCourse(id);
+  const { id = '' } = useParams();
+  const { data: course, isLoading, isError } = useCourse(id);
   const { mutateAsync } = useMarkLessonComplete();
+  const allLessons = useMemo(() => course?.modules?.flatMap((m) => m.lessons) || [], [course?.modules]);
+  const [currentLessonId, setCurrentLessonId] = useState('');
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
 
-  const course = data || buildFallbackCourse(id);
-  const allLessons = useMemo(() => course.modules.flatMap((m) => m.lessons), [course.modules]);
-  const [currentLessonId, setCurrentLessonId] = useState(allLessons[0]?.id || '');
-  const [completedLessons, setCompletedLessons] = useState<string[]>(['l-1']);
+  useEffect(() => {
+    if (allLessons.length > 0 && !currentLessonId) {
+      setCurrentLessonId(allLessons[0].id);
+    }
+  }, [allLessons, currentLessonId]);
 
   const currentLesson = allLessons.find((lesson) => lesson.id === currentLessonId) || allLessons[0];
   const completion = allLessons.length
     ? Math.round((completedLessons.length / allLessons.length) * 100)
     : 0;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 size={48} className="animate-spin text-primary-500" />
+      </div>
+    );
+  }
+
+  if (isError || !course) {
+    return (
+      <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800">
+        <h2 className="text-2xl font-bold mb-2">Course Not Found</h2>
+        <p className="text-gray-500 mb-6">The course you are looking for might have been removed or moved.</p>
+        <Link to={ROUTES.STUDENT_MY_COURSES} className="px-6 py-3 gradient-bg text-white rounded-xl font-bold">
+          Back to My Courses
+        </Link>
+      </div>
+    );
+  }
 
   const handleLessonClick = (lesson: Lesson) => {
     setCurrentLessonId(lesson.id);

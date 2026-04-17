@@ -1,9 +1,39 @@
 import { motion } from 'framer-motion';
-import { User, Bell, Shield, Palette, Save, Camera, Globe } from 'lucide-react';
-import { useState } from 'react';
+import { User, Bell, Shield, Camera, Save, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useUser } from '@/hooks/useStudentData';
 
 export default function StudentSettingsPage() {
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security'>('profile');
+  const { profileQuery, updateProfileMutation, updateSettingsMutation, changePasswordMutation } = useUser();
+  
+  const [profileData, setProfileData] = useState({ name: '', bio: '' });
+  const [passwords, setPasswords] = useState({ current: '', next: '' });
+
+  useEffect(() => {
+    if (profileQuery.data) {
+      setProfileData({
+        name: profileQuery.data.name || '',
+        bio: profileQuery.data.bio || ''
+      });
+    }
+  }, [profileQuery.data]);
+
+  const handleUpdateProfile = () => {
+    updateProfileMutation.mutate(profileData, {
+      onSuccess: () => alert('Profile updated successfully!')
+    });
+  };
+
+  const handleUpdatePassword = () => {
+    if (!passwords.current || !passwords.next) return;
+    changePasswordMutation.mutate(passwords, {
+      onSuccess: () => {
+        setPasswords({ current: '', next: '' });
+        alert('Password changed successfully!');
+      }
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -37,11 +67,17 @@ export default function StudentSettingsPage() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-8 md:p-10 shadow-sm"
       >
-        {activeTab === 'profile' && (
+        {profileQuery.isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 size={32} className="animate-spin text-primary-500" />
+          </div>
+        ) : activeTab === 'profile' ? (
           <div className="space-y-8">
             <div className="flex flex-col md:flex-row gap-8 items-center border-b border-gray-50 dark:border-gray-800 pb-8">
               <div className="relative">
-                <div className="w-32 h-32 rounded-[2rem] gradient-bg flex items-center justify-center text-4xl font-black text-white">AM</div>
+                <div className="w-32 h-32 rounded-[2rem] gradient-bg flex items-center justify-center text-4xl font-black text-white">
+                  {profileData.name?.slice(0, 2).toUpperCase() || 'AM'}
+                </div>
                 <button className="absolute -bottom-2 -right-2 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-primary-600 transition hover:scale-110">
                   <Camera size={20} />
                 </button>
@@ -59,25 +95,28 @@ export default function StudentSettingsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Display Name</label>
-                <input defaultValue="Arjun Mehta" className="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-2xl px-5 py-3.5 text-sm focus:ring-2 focus:ring-primary-500" />
+                <input 
+                  value={profileData.name} 
+                  onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                  className="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-2xl px-5 py-3.5 text-sm focus:ring-2 focus:ring-primary-500" 
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
-                <input defaultValue="arjun@example.com" disabled className="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-2xl px-5 py-3.5 text-sm opacity-60" />
+                <input defaultValue={profileQuery.data?.email} disabled className="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-2xl px-5 py-3.5 text-sm opacity-60" />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Bio / Artist Goals</label>
                 <textarea 
                   rows={4} 
-                  defaultValue="I'm a passionate music student looking to master the tabla and explore the world of rhythm."
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
                   className="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-2xl px-5 py-3.5 text-sm focus:ring-2 focus:ring-primary-500 resize-none" 
                 />
               </div>
             </div>
           </div>
-        )}
-
-        {activeTab === 'notifications' && (
+        ) : activeTab === 'notifications' ? (
           <div className="space-y-6">
             <h3 className="text-xl font-bold mb-4">Notification Preferences</h3>
             {[
@@ -97,18 +136,34 @@ export default function StudentSettingsPage() {
               </div>
             ))}
           </div>
-        )}
-
-        {activeTab === 'security' && (
+        ) : (
           <div className="space-y-8">
             <h3 className="text-xl font-bold mb-4">Security & Authentication</h3>
             <div className="space-y-6">
               <div className="p-6 rounded-3xl border border-gray-100 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/30">
                 <h4 className="font-bold text-sm mb-4">Change Password</h4>
                 <div className="space-y-4">
-                  <input type="password" placeholder="Current Password" className="w-full bg-white dark:bg-gray-900 border-none rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-primary-500" />
-                  <input type="password" placeholder="New Password" className="w-full bg-white dark:bg-gray-900 border-none rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-primary-500" />
-                  <button className="px-6 py-3 rounded-xl gradient-bg text-white text-xs font-bold transition hover:opacity-90">Update Password</button>
+                  <input 
+                    type="password" 
+                    placeholder="Current Password" 
+                    value={passwords.current}
+                    onChange={(e) => setPasswords({...passwords, current: e.target.value})}
+                    className="w-full bg-white dark:bg-gray-900 border-none rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-primary-500" 
+                  />
+                  <input 
+                    type="password" 
+                    placeholder="New Password" 
+                    value={passwords.next}
+                    onChange={(e) => setPasswords({...passwords, next: e.target.value})}
+                    className="w-full bg-white dark:bg-gray-900 border-none rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-primary-500" 
+                  />
+                  <button 
+                    onClick={handleUpdatePassword}
+                    disabled={changePasswordMutation.isPending || !passwords.current || !passwords.next}
+                    className="px-6 py-3 rounded-xl gradient-bg text-white text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
+                  >
+                    {changePasswordMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : 'Update Password'}
+                  </button>
                 </div>
               </div>
 
@@ -124,8 +179,12 @@ export default function StudentSettingsPage() {
         )}
 
         <div className="mt-10 pt-8 border-t border-gray-50 dark:border-gray-800 flex justify-end">
-          <button className="flex items-center gap-2 px-8 py-3.5 gradient-bg text-white rounded-2xl font-black text-sm shadow-lg shadow-primary-500/25 transition hover:opacity-90 active:scale-95">
-            <Save size={18} /> Save All Changes
+          <button 
+            onClick={handleUpdateProfile}
+            disabled={updateProfileMutation.isPending || (activeTab !== 'profile')}
+            className="flex items-center gap-2 px-8 py-3.5 gradient-bg text-white rounded-2xl font-black text-sm shadow-lg shadow-primary-500/25 transition hover:opacity-90 active:scale-95 disabled:opacity-50"
+          >
+            {updateProfileMutation.isPending ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />} Save Profile Changes
           </button>
         </div>
       </motion.div>

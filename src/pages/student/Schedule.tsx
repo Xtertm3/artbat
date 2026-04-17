@@ -1,46 +1,33 @@
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, Clock, Users, Video, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Users, Video, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useMyCourses } from '@/hooks/useCourses';
+import { useMentorship } from '@/hooks/useStudentData';
 import { format } from 'date-fns';
 
 export default function StudentSchedulePage() {
   const { data: enrollments } = useMyCourses();
+  const { sessionsQuery, bookMutation } = useMentorship();
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
-  const [isBooking, setIsBooking] = useState(false);
-  const [bookingStep, setBookingStep] = useState(1);
 
-  const upcomingSessions = [
-    { 
-      id: 's-1', 
-      title: 'Theory Q&A: Ragas & Talas', 
-      instructor: 'Pandit Rajan Misra', 
-      date: new Date(Date.now() + 86400000 * 2), // 2 days later
-      type: 'Group Class',
-      course: 'Tabla for Beginners'
-    },
-    { 
-      id: 's-2', 
-      title: 'Performance Critique', 
-      instructor: 'James Wilson', 
-      date: new Date(Date.now() + 86400000 * 5), // 5 days later
-      type: '1:1 Mentorship',
-      course: 'Guitar Foundations Bootcamp'
-    }
-  ];
+  const upcomingSessions = sessionsQuery.data || [];
+  const isLoading = sessionsQuery.isLoading;
 
   const paidCourses = enrollments?.filter(e => e.course?.price === 0 || e.id.includes('en-')) || [];
 
   const handleBook = () => {
-    setIsBooking(true);
-    setTimeout(() => {
-      setBookingStep(2);
-      setTimeout(() => {
-        setIsBooking(false);
-        setBookingStep(1);
+    if (!selectedCourse) return;
+    const course = paidCourses.find(c => c.course?.title === selectedCourse);
+    
+    bookMutation.mutate({ 
+      courseId: course?.courseId || '', 
+      date: new Date(Date.now() + 86400000 * 3).toISOString() 
+    }, {
+      onSuccess: () => {
         setSelectedCourse(null);
-      }, 2000);
-    }, 1500);
+        alert('Mentorship session booked successfully!');
+      }
+    });
   };
 
   return (
@@ -84,14 +71,14 @@ export default function StudentSchedulePage() {
                   ))}
                 </select>
                 <button 
-                  disabled={!selectedCourse || isBooking}
+                  disabled={!selectedCourse || bookMutation.isPending}
                   onClick={handleBook}
                   className="w-full h-12 gradient-bg rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition transform active:scale-95"
                 >
-                  {isBooking ? (
+                  {bookMutation.isPending ? (
                     <>
                       <Loader2 size={18} className="animate-spin" />
-                      {bookingStep === 1 ? 'Booking...' : 'Success!'}
+                      Booking...
                     </>
                   ) : (
                     <>Book Now <ArrowRight size={18} /></>
@@ -110,39 +97,50 @@ export default function StudentSchedulePage() {
             <button className="text-sm font-bold text-primary-600 dark:text-primary-400 hover:underline">Sync to Calendar</button>
           </div>
           <div className="space-y-4">
-            {upcomingSessions.map((session, idx) => (
-              <motion.article
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                key={session.id}
-                className="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-primary-500/30 transition group"
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="flex gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex flex-col items-center justify-center text-center shrink-0">
-                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{format(session.date, 'MMM')}</span>
-                      <span className="text-xl font-black text-primary-600 leading-none">{format(session.date, 'dd')}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg leading-tight mb-1 group-hover:text-primary-600 transition">{session.title}</h3>
-                      <p className="text-sm text-gray-500 mb-2">{session.course} • With {session.instructor}</p>
-                      <div className="flex items-center gap-3">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
-                          {session.type}
-                        </span>
-                        <span className="flex items-center gap-1 text-xs text-gray-400">
-                          <Clock size={12} /> {format(session.date, 'hh:mm a')}
-                        </span>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 size={32} className="animate-spin text-primary-500" />
+              </div>
+            ) : upcomingSessions.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
+                <CalendarIcon size={40} className="mx-auto text-gray-300 mb-3" />
+                <p className="text-gray-500 text-sm font-medium">No sessions scheduled yet.</p>
+              </div>
+            ) : (
+              upcomingSessions.map((session: any, idx: number) => (
+                <motion.article
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  key={session.id}
+                  className="p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm hover:border-primary-500/30 transition group"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="flex gap-4">
+                      <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex flex-col items-center justify-center text-center shrink-0">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">{format(new Date(session.date), 'MMM')}</span>
+                        <span className="text-xl font-black text-primary-600 leading-none">{format(new Date(session.date), 'dd')}</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg leading-tight mb-1 group-hover:text-primary-600 transition">{session.title}</h3>
+                        <p className="text-sm text-gray-500 mb-2">{session.course} • With {session.instructor}</p>
+                        <div className="flex items-center gap-3">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+                            {session.type}
+                          </span>
+                          <span className="flex items-center gap-1 text-xs text-gray-400">
+                            <Clock size={12} /> {format(new Date(session.date), 'hh:mm a')}
+                          </span>
+                        </div>
                       </div>
                     </div>
+                    <button className="px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                      Join Session
+                    </button>
                   </div>
-                  <button className="px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    Join Session
-                  </button>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              ))
+            )}
           </div>
         </section>
 

@@ -9,15 +9,6 @@ import { useAuthStore } from '@/store/authStore';
 import { formatDuration } from '@/lib/utils';
 import type { Enrollment } from '@/types';
 
-const FALLBACK_ENROLLMENTS: Enrollment[] = [
-  { id: 'en-1', courseId: 'demo-course', userId: 'u-1', enrolledAt: new Date().toISOString(), progress: 45, completedLessons: ['l-1'], lastAccessedAt: new Date().toISOString(),
-    course: { id: 'demo-course', title: 'Guitar Foundations Bootcamp', description: 'Master the basics of rhythm and chords.', shortDescription: 'Play your first songs in 2 weeks.', thumbnail: '', category: 'music', subcategory: 'guitar', level: 'beginner', language: 'English', price: 0, instructor: { id: 'i-1', name: 'James Wilson', rating: 4.9 }, rating: 4.9, totalReviews: 832, totalStudents: 12420, totalLessons: 6, totalDuration: 78, modules: [], tags: ['guitar'], isPublished: true, isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } },
-  { id: 'en-2', courseId: 'course-tabla-101', userId: 'u-1', enrolledAt: new Date().toISOString(), progress: 15, completedLessons: ['l-1'], lastAccessedAt: new Date().toISOString(),
-    course: { id: 'course-tabla-101', title: 'Tabla for Beginners', description: 'Comprehensive guide to tabla bols and rhythm.', shortDescription: 'Master the art of Indian percussion.', thumbnail: '', category: 'music', subcategory: 'tabla', level: 'beginner', language: 'Hindi', price: 0, instructor: { id: 'i-4', name: 'Pandit Rajan Misra', rating: 4.9 }, rating: 4.9, totalReviews: 612, totalStudents: 9800, totalLessons: 30, totalDuration: 480, modules: [], tags: ['tabla'], isPublished: true, isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } },
-  { id: 'en-3', courseId: 'course-bharatanatyam-101', userId: 'u-1', enrolledAt: new Date().toISOString(), progress: 5, completedLessons: [], lastAccessedAt: new Date().toISOString(),
-    course: { id: 'course-bharatanatyam-101', title: 'Bharatanatyam Foundations', description: 'Traditional dance technique and posture.', shortDescription: 'Start your classical dance journey.', thumbnail: '', category: 'dance', subcategory: 'bharatanatyam', level: 'beginner', language: 'Tamil', price: 0, instructor: { id: 'i-12', name: 'Savitha Narayanan', rating: 4.9 }, rating: 4.9, totalReviews: 748, totalStudents: 11230, totalLessons: 36, totalDuration: 540, modules: [], tags: ['Bharatanatyam'], isPublished: true, isFeatured: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } },
-];
-
 const COURSE_EMOJI: Record<string, string> = {
   guitar: '🎸', tabla: '🥁', bharatanatyam: '🕍', hindustani: '🎤',
   piano: '🎹', sitar: '🪕', violin: '🎻', kathak: '🕍', bansuri: '🪈', default: '🎼',
@@ -28,6 +19,7 @@ const RECOMMENDED = [
   { id: 'course-bollywood-101', title: 'Bollywood Dance: Filmi Moves', instructor: 'Geeta Kapur', rating: 4.7, price: 899, emoji: '🎬' },
   { id: 'course-bansuri-101', title: 'Bansuri Flute: Indian Classical', instructor: 'Shri Hari Prasad', rating: 4.8, price: 999, emoji: '🪈' },
 ];
+
 function StatCard({
   label, value, icon, gradient,
 }: { label: string; value: string; icon: ReactNode; gradient?: string }) {
@@ -47,9 +39,8 @@ function StatCard({
 
 export default function StudentDashboardPage() {
   const { user } = useAuthStore();
-  const { data, isLoading } = useMyCourses();
+  const { data: enrollments = [], isLoading } = useMyCourses();
 
-  const enrollments = data && data.length ? data : FALLBACK_ENROLLMENTS;
   const totalCourses = enrollments.length;
   const avgProgress = totalCourses ? Math.round(enrollments.reduce((s, i) => s + i.progress, 0) / totalCourses) : 0;
   const completedCourses = enrollments.filter((i) => i.progress >= 100).length;
@@ -97,32 +88,40 @@ export default function StudentDashboardPage() {
           <p className="text-gray-500 text-sm">Loading your courses...</p>
         ) : (
           <div className="space-y-3">
-            {enrollments.slice(0, 3).map((item) => {
-              const emoji = COURSE_EMOJI[item.course?.subcategory || ''] || COURSE_EMOJI.default;
-              const isDone = item.progress >= 100;
-              return (
-                <motion.article key={item.id}
-                  initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
-                  className="rounded-xl border border-gray-200 dark:border-gray-800 p-4 flex items-center gap-4 hover:border-primary-300 transition-colors">
-                  <div className="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center text-2xl shrink-0">{emoji}</div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <p className="font-semibold text-sm truncate">{item.course?.title}</p>
-                      {isDone && <span className="text-xs font-bold text-green-600 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full shrink-0">✓ Done</span>}
+            {enrollments.length === 0 ? (
+              <div className="text-center py-12">
+                <BookOpen size={40} className="mx-auto text-gray-300 mb-3" />
+                <p className="text-gray-500 mb-4">You haven't enrolled in any courses yet.</p>
+                <Link to={ROUTES.COURSES} className="text-primary-600 font-bold hover:underline">Explore Courses</Link>
+              </div>
+            ) : (
+              enrollments.slice(0, 3).map((item) => {
+                const emoji = COURSE_EMOJI[item.course?.subcategory || ''] || COURSE_EMOJI.default;
+                const isDone = item.progress >= 100;
+                return (
+                  <motion.article key={item.id}
+                    initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                    className="rounded-xl border border-gray-200 dark:border-gray-800 p-4 flex items-center gap-4 hover:border-primary-300 transition-colors">
+                    <div className="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center text-2xl shrink-0">{emoji}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <p className="font-semibold text-sm truncate">{item.course?.title}</p>
+                        {isDone && <span className="text-xs font-bold text-green-600 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full shrink-0">✓ Done</span>}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">{item.course?.instructor.name} • {item.course?.totalLessons} lessons</p>
+                      <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                        <div className={`h-full ${isDone ? 'bg-green-500' : 'gradient-bg'}`} style={{ width: `${Math.max(3, item.progress)}%` }} />
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">{item.progress}% complete</p>
                     </div>
-                    <p className="text-xs text-gray-500 mb-2">{item.course?.instructor.name} • {item.course?.totalLessons} lessons</p>
-                    <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                      <div className={`h-full ${isDone ? 'bg-green-500' : 'gradient-bg'}`} style={{ width: `${Math.max(3, item.progress)}%` }} />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1">{item.progress}% complete</p>
-                  </div>
-                  <Link to={ROUTES.STUDENT_COURSE_LEARNING.replace(':id', item.courseId)}
-                    className="shrink-0 px-4 py-2 gradient-bg text-white text-sm font-semibold rounded-lg hover:opacity-90 transition">
-                    {isDone ? 'Review' : 'Resume'}
-                  </Link>
-                </motion.article>
-              );
-            })}
+                    <Link to={ROUTES.STUDENT_COURSE_LEARNING.replace(':id', item.courseId)}
+                      className="shrink-0 px-4 py-2 gradient-bg text-white text-sm font-semibold rounded-lg hover:opacity-90 transition">
+                      {isDone ? 'Review' : 'Resume'}
+                    </Link>
+                  </motion.article>
+                );
+              })
+            )}
           </div>
         )}
       </section>
