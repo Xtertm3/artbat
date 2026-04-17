@@ -42,6 +42,7 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         <Link to={ROUTES.COURSES} className="text-sm font-medium hover:text-primary-600 transition">Courses</Link>
         <Link to={ROUTES.EXPLORE_ARTS} className="text-sm font-medium hover:text-primary-600 transition">Explore</Link>
         <Link to={ROUTES.PRICING} className="text-sm font-medium hover:text-primary-600 transition">Pricing</Link>
+        <Link to={ROUTES.BECOME_EDUCATOR} className="text-sm font-medium hover:text-primary-600 transition">Teach with Us</Link>
         <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition">Contact</Link>
       </nav>
 

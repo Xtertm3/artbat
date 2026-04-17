@@ -22,6 +22,7 @@ const CoursesPage = lazy(() => import('@/pages/public/Courses'));
 const ExploreArtsPage = lazy(() => import('@/pages/public/ExploreArts'));
 const PricingPage = lazy(() => import('@/pages/public/Pricing'));
 const ContactPage = lazy(() => import('@/pages/public/Contact'));
+const BecomeEducatorPage = lazy(() => import('@/pages/public/BecomeEducator'));
 const AdminDashboardPage = lazy(() => import('@/pages/admin/Dashboard'));
 const InstructorDashboardPage = lazy(() => import('@/pages/instructor/Dashboard'));
 
@@ -132,6 +133,14 @@ function AppRouter() {
         element={
           <PublicLayout>
             <ContactPage />
+          </PublicLayout>
+        }
+      />
+      <Route
+        path={ROUTES.BECOME_EDUCATOR}
+        element={
+          <PublicLayout>
+            <BecomeEducatorPage />
           </PublicLayout>
         }
       />

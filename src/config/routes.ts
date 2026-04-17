@@ -8,6 +8,7 @@ export const ROUTES = {
   ABOUT: '/about',
   CONTACT: '/contact',
   PRICING: '/pricing',
+  BECOME_EDUCATOR: '/teach',
 
   // Auth
   LOGIN: '/login',
