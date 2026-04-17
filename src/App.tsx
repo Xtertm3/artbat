@@ -16,6 +16,11 @@ import StudentLearningPage from '@/pages/student/Learning';
 import StudentMyCoursesPage from '@/pages/student/MyCourses';
 import StudentAssignmentsPage from '@/pages/student/Assignments';
 import PracticePage from '@/pages/student/Practice';
+import StudentSchedulePage from '@/pages/student/Schedule';
+import StudentProgressPage from '@/pages/student/Progress';
+import StudentCertificatesPage from '@/pages/student/Certificates';
+import StudentCommunityPage from '@/pages/student/Community';
+import StudentSettingsPage from '@/pages/student/Settings';
 
 const CourseDetailPage = lazy(() => import('@/pages/public/CourseDetail'));
 const CoursesPage = lazy(() => import('@/pages/public/Courses'));
@@ -39,11 +44,11 @@ function RouteSkeleton() {
 }
 
 const studentPages = [
-  { path: ROUTES.STUDENT_SCHEDULE, title: 'Schedule' },
-  { path: ROUTES.STUDENT_PROGRESS, title: 'Progress' },
-  { path: ROUTES.STUDENT_CERTIFICATES, title: 'Certificates' },
-  { path: ROUTES.STUDENT_COMMUNITY, title: 'Community' },
-  { path: ROUTES.STUDENT_SETTINGS, title: 'Settings' },
+  { path: ROUTES.STUDENT_SCHEDULE, title: 'Schedule', component: StudentSchedulePage },
+  { path: ROUTES.STUDENT_PROGRESS, title: 'Progress', component: StudentProgressPage },
+  { path: ROUTES.STUDENT_CERTIFICATES, title: 'Certificates', component: StudentCertificatesPage },
+  { path: ROUTES.STUDENT_COMMUNITY, title: 'Community', component: StudentCommunityPage },
+  { path: ROUTES.STUDENT_SETTINGS, title: 'Settings', component: StudentSettingsPage },
 ];
 
 const instructorPages = [
@@ -230,10 +235,7 @@ function AppRouter() {
           element={
             <ProtectedRoute allowedRoles={['student']}>
               <DashboardLayout>
-                <ModuleWorkspace
-                  title={page.title}
-                  subtitle="Student module frontend is active. Detailed interactions and backend integration are being expanded."
-                />
+                <page.component />
               </DashboardLayout>
             </ProtectedRoute>
           }
