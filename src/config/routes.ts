@@ -6,9 +6,17 @@ export const ROUTES = {
   COURSE_DETAIL: '/courses/:id',
   INSTRUCTOR_PROFILE: '/instructors/:id',
   ABOUT: '/about',
+  RESOURCES: '/resources',
+  PROGRAMS: '/programs',
+  TRIAL: '/trial',
+  FAQ: '/faq',
   CONTACT: '/contact',
   PRICING: '/pricing',
   BECOME_EDUCATOR: '/teach',
+  PRIVACY_POLICY: '/privacy-policy',
+  TERMS_CONDITIONS: '/terms-conditions',
+  COOKIES_POLICY: '/cookies-policy',
+  REFUND_POLICY: '/refund-policy',
 
   // Auth
   LOGIN: '/login',

@@ -24,33 +24,41 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Company */}
+          {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Company</h4>
+            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              {[['About', ROUTES.ABOUT], ['Contact', ROUTES.CONTACT], ['Pricing', ROUTES.PRICING], ['Become an Educator', ROUTES.BECOME_EDUCATOR]].map(([label, to]) => (
-                <li key={label}><Link to={to} className="hover:text-white transition">{label}</Link></li>
-              ))}
+              <li><Link to={ROUTES.RESOURCES} className="hover:text-white transition">Online Music Resources</Link></li>
+              <li><Link to={ROUTES.PROGRAMS} className="hover:text-white transition">Packages & Programs</Link></li>
+              <li><Link to={ROUTES.BECOME_EDUCATOR} className="hover:text-white transition">Careers</Link></li>
+              <li><Link to={ROUTES.ABOUT} className="hover:text-white transition">About Us</Link></li>
+              <li><a href="https://www.spardhaidol.com/" target="_blank" rel="noreferrer" className="hover:text-white transition">Spardha Idol</a></li>
             </ul>
           </div>
 
           {/* Courses */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Courses</h4>
+            <h4 className="text-white font-semibold mb-4">Available Courses</h4>
             <ul className="space-y-2 text-sm">
-              {[['🎸 Music', `${ROUTES.COURSES}?category=music`], ['💃 Dance', `${ROUTES.COURSES}?category=dance`], ['🎭 Theater', `${ROUTES.COURSES}?category=theater`]].map(([label, to]) => (
-                <li key={label}><Link to={to} className="hover:text-white transition">{label}</Link></li>
-              ))}
+              <li><Link to={`${ROUTES.COURSES}?category=piano`} className="hover:text-white transition">Piano</Link></li>
+              <li><Link to={`${ROUTES.COURSES}?category=acoustic-guitar`} className="hover:text-white transition">Acoustic Guitar</Link></li>
+              <li><Link to={`${ROUTES.COURSES}?category=electronic-keyboard`} className="hover:text-white transition">Electronic Keyboard</Link></li>
+              <li><Link to={`${ROUTES.COURSES}?category=bollywood-vocals`} className="hover:text-white transition">Bollywood Vocals</Link></li>
+              <li><Link to={`${ROUTES.COURSES}?category=western-vocals`} className="hover:text-white transition">Western Vocals</Link></li>
+              <li><Link to={`${ROUTES.COURSES}?category=bharatanatyam`} className="hover:text-white transition">Bharatanatyam Dance</Link></li>
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Support & Legal */}
           <div>
             <h4 className="text-white font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
-              {['Help Center', 'FAQ', 'Privacy Policy', 'Terms of Service'].map((l) => (
-                <li key={l}><a href="#" className="hover:text-white transition">{l}</a></li>
-              ))}
+              <li><Link to={ROUTES.CONTACT} className="hover:text-white transition">Help & Contact Us</Link></li>
+              <li><Link to={ROUTES.FAQ} className="hover:text-white transition">FAQ's</Link></li>
+              <li><Link to={ROUTES.TERMS_CONDITIONS} className="hover:text-white transition">Terms & Conditions</Link></li>
+              <li><Link to={ROUTES.PRIVACY_POLICY} className="hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link to={ROUTES.COOKIES_POLICY} className="hover:text-white transition">Cookies Policy</Link></li>
+              <li><Link to={ROUTES.REFUND_POLICY} className="hover:text-white transition">Refund Policy</Link></li>
             </ul>
           </div>
         </div>

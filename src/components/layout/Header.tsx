@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Search, Sun, Moon, Menu, LogOut, Settings, BookOpen } from 'lucide-react';
+import { Bell, Search, Sun, Moon, Menu, LogOut, Settings, BookOpen, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useThemeStore } from '@/store/themeStore';
@@ -39,11 +39,52 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
 
       {/* Main Nav */}
       <nav className="hidden lg:flex items-center gap-6 mr-4">
-        <Link to={ROUTES.COURSES} className="text-sm font-medium hover:text-primary-600 transition">Courses</Link>
-        <Link to={ROUTES.EXPLORE_ARTS} className="text-sm font-medium hover:text-primary-600 transition">Explore</Link>
-        <Link to={ROUTES.PRICING} className="text-sm font-medium hover:text-primary-600 transition">Pricing</Link>
+        <div className="relative group/courses">
+          <button className="flex items-center gap-1 text-sm font-medium hover:text-primary-600 transition py-4">
+            Courses <ChevronDown size={14} className="group-hover/courses:rotate-180 transition-transform" />
+          </button>
+          
+          {/* Mega Menu Dropdown */}
+          <div className="absolute top-full left-0 w-[600px] bg-white dark:bg-gray-900 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-800 p-6 opacity-0 invisible group-hover/courses:opacity-100 group-hover/courses:visible transition-all duration-300 grid grid-cols-3 gap-6 translate-y-2 group-hover/courses:translate-y-0">
+            <div>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-gray-800 pb-2">Instruments</h3>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li><Link to={`${ROUTES.COURSES}?category=piano`} className="hover:text-primary-600 transition">Piano</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=acoustic-guitar`} className="hover:text-primary-600 transition">Acoustic Guitar</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=electronic-keyboard`} className="hover:text-primary-600 transition">Electronic Keyboard</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=ukulele`} className="hover:text-primary-600 transition">Ukulele</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=violin`} className="hover:text-primary-600 transition">Violin</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=electric-guitar`} className="hover:text-primary-600 transition">Electric Guitar</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=flute`} className="hover:text-primary-600 transition">Flute</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=tabla`} className="hover:text-primary-600 transition">Tabla</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-gray-800 pb-2">Vocals</h3>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li><Link to={`${ROUTES.COURSES}?category=bollywood-vocals`} className="hover:text-primary-600 transition">Bollywood Vocals</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=western-vocals`} className="hover:text-primary-600 transition">Western Vocals</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=hindustani-vocals`} className="hover:text-primary-600 transition">Hindustani Vocals</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=carnatic-vocals`} className="hover:text-primary-600 transition">Carnatic Vocals</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=regional-vocals`} className="hover:text-primary-600 transition">Regional Film Music</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-3 border-b border-gray-100 dark:border-gray-800 pb-2">Dance</h3>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li><Link to={`${ROUTES.COURSES}?category=bharatanatyam`} className="hover:text-primary-600 transition">Bharatanatyam</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=bollywood-dance`} className="hover:text-primary-600 transition">Bollywood Dance</Link></li>
+                <li><Link to={`${ROUTES.COURSES}?category=kathak`} className="hover:text-primary-600 transition">Kathak</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <Link to={ROUTES.ABOUT} className="text-sm font-medium hover:text-primary-600 transition">About</Link>
+        <Link to={ROUTES.RESOURCES} className="text-sm font-medium hover:text-primary-600 transition">Resources</Link>
+        <Link to={ROUTES.PROGRAMS} className="text-sm font-medium hover:text-primary-600 transition">Programs</Link>
+        <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition">Support</Link>
         <Link to={ROUTES.BECOME_EDUCATOR} className="text-sm font-medium hover:text-primary-600 transition">Teach with Us</Link>
-        <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition">Contact</Link>
       </nav>
 
 
@@ -126,6 +167,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
             <Link to={ROUTES.LOGIN}
               className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 transition">
               Login
+            </Link>
+            <Link to={ROUTES.TRIAL}
+              className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold border-2 border-primary-500 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 rounded-lg transition items-center">
+              Book a Free Trial
             </Link>
             <Link to={ROUTES.REGISTER}
               className="px-4 py-2 text-sm font-semibold gradient-bg text-white rounded-lg hover:opacity-90 transition">

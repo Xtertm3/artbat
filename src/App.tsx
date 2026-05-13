@@ -31,6 +31,17 @@ const BecomeEducatorPage = lazy(() => import('@/pages/public/BecomeEducator'));
 const AdminDashboardPage = lazy(() => import('@/pages/admin/Dashboard'));
 const InstructorDashboardPage = lazy(() => import('@/pages/instructor/Dashboard'));
 
+// New Spardha Pages
+const AboutPage = lazy(() => import('@/pages/public/About'));
+const ResourcesPage = lazy(() => import('@/pages/public/Resources'));
+const ProgramsPage = lazy(() => import('@/pages/public/Programs'));
+const TrialPage = lazy(() => import('@/pages/public/Trial'));
+const FAQPage = lazy(() => import('@/pages/public/FAQ'));
+const PrivacyPolicyPage = lazy(() => import('@/pages/public/PrivacyPolicy'));
+const TermsConditionsPage = lazy(() => import('@/pages/public/TermsConditions'));
+const CookiesPolicyPage = lazy(() => import('@/pages/public/CookiesPolicy'));
+const RefundPolicyPage = lazy(() => import('@/pages/public/RefundPolicy'));
+
 
 
 function RouteSkeleton() {
@@ -149,6 +160,15 @@ function AppRouter() {
           </PublicLayout>
         }
       />
+      <Route path={ROUTES.ABOUT} element={<PublicLayout><AboutPage /></PublicLayout>} />
+      <Route path={ROUTES.RESOURCES} element={<PublicLayout><ResourcesPage /></PublicLayout>} />
+      <Route path={ROUTES.PROGRAMS} element={<PublicLayout><ProgramsPage /></PublicLayout>} />
+      <Route path={ROUTES.TRIAL} element={<PublicLayout><TrialPage /></PublicLayout>} />
+      <Route path={ROUTES.FAQ} element={<PublicLayout><FAQPage /></PublicLayout>} />
+      <Route path={ROUTES.PRIVACY_POLICY} element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
+      <Route path={ROUTES.TERMS_CONDITIONS} element={<PublicLayout><TermsConditionsPage /></PublicLayout>} />
+      <Route path={ROUTES.COOKIES_POLICY} element={<PublicLayout><CookiesPolicyPage /></PublicLayout>} />
+      <Route path={ROUTES.REFUND_POLICY} element={<PublicLayout><RefundPolicyPage /></PublicLayout>} />
 
 
       <Route
