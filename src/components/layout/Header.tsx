@@ -80,11 +80,48 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
           </div>
         </div>
 
-        <Link to={ROUTES.ABOUT} className="text-sm font-medium hover:text-primary-600 transition">About</Link>
-        <Link to={ROUTES.RESOURCES} className="text-sm font-medium hover:text-primary-600 transition">Resources</Link>
-        <Link to={ROUTES.PROGRAMS} className="text-sm font-medium hover:text-primary-600 transition">Programs</Link>
-        <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition">Support</Link>
-        <Link to={ROUTES.BECOME_EDUCATOR} className="text-sm font-medium hover:text-primary-600 transition">Teach with Us</Link>
+        {/* About Dropdown */}
+        <div className="relative group/about">
+          <button className="flex items-center gap-1 text-sm font-medium hover:text-primary-600 transition py-4">
+            About <ChevronDown size={14} className="group-hover/about:rotate-180 transition-transform" />
+          </button>
+          <div className="absolute top-full left-0 w-48 bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-800 py-3 opacity-0 invisible group-hover/about:opacity-100 group-hover/about:visible transition-all duration-300 translate-y-2 group-hover/about:translate-y-0">
+            <ul className="flex flex-col">
+              <li><Link to={ROUTES.ABOUT} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">About Us</Link></li>
+              <li><Link to={ROUTES.FAQ} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">FAQ's</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Resources Dropdown */}
+        <div className="relative group/resources">
+          <button className="flex items-center gap-1 text-sm font-medium hover:text-primary-600 transition py-4">
+            Resources <ChevronDown size={14} className="group-hover/resources:rotate-180 transition-transform" />
+          </button>
+          <div className="absolute top-full left-0 w-56 bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-800 py-3 opacity-0 invisible group-hover/resources:opacity-100 group-hover/resources:visible transition-all duration-300 translate-y-2 group-hover/resources:translate-y-0">
+            <ul className="flex flex-col">
+              <li><Link to={ROUTES.RESOURCES} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">Online Music Resources</Link></li>
+              <li><Link to={ROUTES.RESOURCES} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">Blogs</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Programs Dropdown */}
+        <div className="relative group/programs">
+          <button className="flex items-center gap-1 text-sm font-medium hover:text-primary-600 transition py-4">
+            Programs <ChevronDown size={14} className="group-hover/programs:rotate-180 transition-transform" />
+          </button>
+          <div className="absolute top-full left-0 w-56 bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-800 py-3 opacity-0 invisible group-hover/programs:opacity-100 group-hover/programs:visible transition-all duration-300 translate-y-2 group-hover/programs:translate-y-0">
+            <ul className="flex flex-col">
+              <li><Link to={ROUTES.PROGRAMS} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">Corporate Programs</Link></li>
+              <li><a href="https://www.spardhaidol.com/" target="_blank" rel="noreferrer" className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">Spardha Idol</a></li>
+              <li><Link to={ROUTES.PROGRAMS} className="block px-5 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition">Gift an Experience</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <Link to={ROUTES.CONTACT} className="text-sm font-medium hover:text-primary-600 transition py-4">Support</Link>
+        <Link to={ROUTES.BECOME_EDUCATOR} className="text-sm font-medium hover:text-primary-600 transition py-4">Teach with Us</Link>
       </nav>
 
 
