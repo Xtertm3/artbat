@@ -48,6 +48,7 @@ export interface Lesson {
   type: LessonType;
   duration?: number;
   videoUrl?: string;
+  theory?: string;
   isPreview: boolean;
   isCompleted?: boolean;
   order: number;

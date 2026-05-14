@@ -93,6 +93,27 @@ export default function StudentLearningPage() {
             title={currentLesson?.title} 
             onEnded={markCurrentLessonComplete}
           />
+
+          <div className="mt-8 border-t border-gray-100 dark:border-gray-800 pt-6">
+            <div className="flex items-center gap-6 border-b border-gray-100 dark:border-gray-800 pb-px mb-6">
+              <button className="pb-3 border-b-2 border-primary-600 text-primary-600 font-semibold">
+                Theory & Notes
+              </button>
+              <button className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white font-medium transition">
+                Resources
+              </button>
+              <button className="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white font-medium transition">
+                Discussion
+              </button>
+            </div>
+            
+            <div className="prose dark:prose-invert max-w-none">
+              <h3 className="text-xl font-bold mb-4">{currentLesson?.title} - Lesson Notes</h3>
+              <div className="text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 leading-relaxed">
+                {currentLesson?.theory || 'No theory text available for this lesson.'}
+              </div>
+            </div>
+          </div>
         </article>
       </section>
 

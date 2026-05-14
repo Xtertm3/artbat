@@ -10,6 +10,8 @@ const lessons = (moduleId: string, items: { title: string; type?: 'video' | 'qui
     duration: it.mins ?? 12,
     isPreview: it.preview ?? i === 0,
     order: i + 1,
+    videoUrl: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+    theory: `This is the comprehensive theory section for ${it.title}. In this lesson, we cover the foundational concepts required to master the topic. Ensure you practice the exercises demonstrated in the video. The core principle here involves steady repetition, proper posture, and active listening. Review the video and practice alongside the instructor to build muscle memory and theoretical understanding.`,
   }));
 
 export const MOCK_COURSES: Course[] = [
